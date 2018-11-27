@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv=”Content-Type” content=”text/html; charset=utf-8″>
+  <title>精细化管理平台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+  <link href="../bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../bootstrap3-editable/js/bootstrap-editable.js"></script>
+  <script src="../js/bootstrap-table.js"></script>
+  <script src="../js/bootstrap-table-editable.js"></script>
+  <script src="../dist/js/adminlte.min.js"></script>
+  <script src="../bower_components/datatables.net/js/jquery.dataTables.js"></script>
+  <script src="js/common/jQuery.print.js"></script>
+  <!--<link  rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css">-->
+  <!--<link  rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css">-->
+  <script type="text/javascript   " src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+  <script src="../bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+  <script src="js/common/common.js"></script>
+  <link rel="stylesheet" href="../common/common.css">
+  <style type="text/css">
+    .userInfo_dd {position: absolute;top: 72px;background: #367fa9;color: #fff;width: 150px;right: 18px;padding: 0;box-shadow: 0 2px 2px #ccc;  }
+    .userInfo_dd{margin-top: 50px;top:0px;position:absolute;opacity: 0;display: block;font-size: 12px;transition: 0.3s;-webkit-transition: .5s;-moz-transition: .5s;}
+    .userInfo_dd {display: block;}
+    .userInfo_dd a {display: block;font-size: 14px;color: #eee;padding: 10px 15px;}
+    .userInfo_dd a:hover {background: #24aaff;}
+    .userInfo_dd a i {margin-right: 5px;}
+    .userInfo_dd a span {float: right;display: block;background: #ff4400;color: #fff;border-radius: 10px;width: 20px;height: 20px;font-size: 12px;line-height: 20px;text-align: center;  }
+    #show{display: none;}
+    #content:hover #show {color: #fff;opacity: 1;}
+    #content:hover #show{display:block;}
+    .logo-lg{
+      display: block;
+      font-size: 24px;
+      font-weight: bolder;
+      /*width: 290px;*/
+      position: relative;
+      z-index: 2000;
+      background-image: url(images/title.png);
+      background-repeat: no-repeat;
+      background-position: 0px -9px;
+      background-size: 230px 70px;
+    }
+  </style>
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <!--<span class="logo-mini">采集</span>-->
+      <span class="logo-lg">精细化管理平台</span>
+    </a>
+    <nav class="navbar navbar-static-top" style="height: 50px">
+
+      <div id="content" class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a href="#" style="padding-top: 5px;width: 250px;" class="dropdown-toggle" data-toggle="dropdown">
+              <img style="width: 40px;height: 40px;" src="../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span id="loginName2" class="hidden-xs"></span>
+              <p id="orgName"></p>
+            </a>
+          </li>
+          <!--<li>-->
+            <!--<a href="#" ><i class="fa fa-gears"></i></a>-->
+          <!--</li>-->
+        </ul>
+        <div id="show" class="userInfo_dd" style="width: 250px;right: auto;">
+          <a href="javascript:;" id="showSelfInfo" data-id=""><!--<i class="jlfont">&#xe624;</i>-->修改个人资料</a>
+          <a href="javascript:;" id="changePass" data-id=""><!--<i class="jlfont">&#xe624;</i>-->修改密码</a>
+          <a href="javascript:;" id="btn_logout"><!--<i class="jlfont">&#xe623;</i>-->退出平台</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div class="modal" id="adduserLayer1">
+    <div class="modal-dialog" style="width: 700px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">新增账户</h4>
+        </div>
+        <div class="modal-body">
+          <div class="logbox_account" id="logbox_account">
+            <form id="mainForm"  method="post" class="form-horizontal">
+              <input type="hidden" id="id1">
+              <dl>
+                <dd class="roleeditBox rogemmList clearfix">
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label"><span style="color:red">*</span>用户姓名：</label>
+                    <div class="col-sm-9">
+                      <input name="docInfo.userName" id="userNames1" type="text" class="form-control" style="width: 300px" data-rule="notEmpty,max:20,min:2,special" errmsg="账户名称应由2-20个字符组成！">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label"><span style="color:red">*</span>性别：</label>
+                    <div class="col-sm-9">
+                      <input type="hidden" id="sex1" name="docInfo.status" value="">
+                      <div class="input-group-btn">
+                        <button id="dropmenuSex1" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="text-align:left; width:200px;">
+                          男<span style="float: right; margin-top: 7px;" class="caret"></span>
+                        </button>
+                        <ul id="sexLi1" class="dropdown-menu" role="menu" style="width:200px;max-height:320px;overflow-y:auto;overflow-x:hidden;">
+                          <li value="男" style=''><a href="javascript:">男</a></li>
+                          <li value="女" style='float: left; margin: 0 0; width:200px;'><a href="javascript:">女</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label"><span style="color:red">*</span>登录帐号：</label>
+                    <div class="col-sm-9">
+                      <input name="docInfo.loginName" id="loginName1" type="text" class="form-control" style="width: 300px" data-rule="notEmpty,max:20,min:3,special" errmsg="登录帐号应由3-20个字符组成！" disabled>
+                    </div>
+                  </div>
+                  <!--<div class="form-group">-->
+                    <!--<label   class="col-sm-3 control-label"><span style="color:red">*</span>登录密码：</label>-->
+                    <!--<div class="col-sm-9">-->
+                      <!--<input name="docInfo.password" id="password1" type="password" class="form-control" style="width: 300px" value="123456" data-rule="notEmpty,max:18,min:6" errmsg="登录密码应由6-18个字符组成！">-->
+                      <!--<span>(默认密码：123456)</span>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label"><span style="color:red">*</span>手机号码：</label>
+                    <div class="col-sm-9">
+                      <input name="docInfo.telephone" id="telephone1" type="text" class="form-control" style="width: 300px" data-rule="notEmpty,phone" errmsg="手机号码不能为空！">
+                    </div>
+                  </div>
+                  <div class="form-group width100" >
+                    <label   class="col-sm-3 control-label">简介：</label>
+                    <div class="col-sm-9">
+                      <textarea class="form-control" style="width:500px;" name="remark" id="remark1" rows="3" maxlength="1000"></textarea>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary tobaoc" id="saveOrUpdateOrgan1">提 交</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+  <div class="modal fade" id="change_pass">
+    <div class="modal-dialog small-dialog" style="width:400px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title"><span class="left" >修改密码</span></h4>
+        </div>
+        <div class="modal-body" style="top: 15px;">
+          <div class="logbox clearfix">
+              <input type="hidden" id="subid"/>
+            <div class="form-group" style="height: 50px;">
+              <label style="top: 5px;left: 30px;" for="inputEmail3" class="col-sm-3 control-label">旧密码：</label>
+              <div class="col-sm-8">
+                <input id="oldPwd" type="password" class="form-control" style="width: 200px"/>
+              </div>
+            </div>
+            <div class="form-group" style="height: 50px;">
+              <label style="top: 5px;left: 30px;" for="inputEmail3" class="col-sm-3 control-label">新密码：</label>
+              <div class="col-sm-8">
+                <input id="newPwd" type="password" class="form-control" style="width: 200px"/>
+              </div>
+            </div>
+            <div class="form-group" style="height: 50px;">
+              <label style="top: 5px;left: 30px;" for="inputEmail3" class="col-sm-3 control-label">新密码：</label>
+              <div class="col-sm-8">
+                <input id="surePwd" type="password" class="form-control" style="width: 200px"/>
+              </div>
+            </div>
+                <!--<label  class="text_right" align="right"><span>新密码：</span></label>-->
+                <!--<input style="width: 200px;" class="form-control" type='password' name='newPwd' id="newPwd"/>-->
+                <!--<label  class="text_right" align="right"><span>重复新密码：</span></label>-->
+                <!--<input style="width: 200px;" class="form-control" type='password' name='surePwd' id="surePwd"/>-->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary save" id="saveResetPwd">提交</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+  <aside class="main-sidebar" style="background-color: rgb(245,245,245)">
+    <section class="sidebar">
+      <ul class="sidebar-menu" data-widget="tree">
+        <!--<li><a id="init" href="javascript:;" style="background-image: url(images/首页.png);background-repeat: no-repeat; background-position: 10px 12px;background-size: 20px 20px;"><i class="fa"></i> <span>系统首页</span></a></li>-->
+        <!--<li class="treeview">-->
+          <!--<a href="#" style="background-image: url(images/库存.png);background-repeat: no-repeat; background-position: 10px 12px;background-size: 20px 20px;">-->
+            <!--<i class="fa"></i>-->
+            <!--<span>库存管理</span>-->
+          <!--</a>-->
+          <!--<ul class="treeview-menu">-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('stock/stockCheck.html',this)"><i class="fa fa-circle-o"></i> 库存查询</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('stock/stockOutAndIn.html',this)"><i class="fa fa-circle-o"></i> 出入库明细</a></li>-->
+          <!--</ul>-->
+        <!--</li>-->
+        <!--<li><a href="javascript:;" style="background-image: url(images/采购2.png);background-repeat: no-repeat; background-position: 10px 12px;background-size: 20px 20px;" onclick="pageUrl('buyPrice/buyPrice.html',this)" ><i class="fa"></i> <span>采购管理</span></a></li>-->
+        <!--<li><a href="javascript:;" style="background-image: url(images/加工2.png);background-repeat: no-repeat; background-position: 10px 12px;background-size: 20px 20px;" onclick="pageUrl('process/process.html',this)"><i class="fa "></i> <span>加工管理</span></a></li>-->
+        <!--<li><a href="javascript:;" style="background-image: url(images/订单.png);background-repeat: no-repeat; background-position: 10px 12px;background-size: 20px 20px;"onclick="pageUrl('order/orderManage.html',this)"><i class="fa "></i> <span>订单管理</span></a></li>-->
+        <!--<li class="treeview">-->
+          <!--<a href="#" style="background-image: url(images/统计报表.png);background-repeat: no-repeat; background-position: 10px 12px;background-size: 20px 20px;">-->
+            <!--<i class="fa"></i>-->
+            <!--<span>报表查询</span>-->
+          <!--</a>-->
+          <!--<ul class="treeview-menu">-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('report/balance.html',this)"><i class="fa fa-circle-o"></i> 平衡表</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('report/account.html',this)"><i class="fa fa-circle-o"></i> 对账单</a></li>-->
+          <!--</ul>-->
+        <!--</li>-->
+        <!--<li class="treeview">-->
+          <!--<a href="#" style="background-image: url(images/基础数据.png);background-repeat: no-repeat; background-position: 10px 12px;background-size: 20px 20px;">-->
+            <!--<i class="fa"></i>-->
+            <!--<span>基础数据</span>-->
+          <!--</a>-->
+          <!--<ul class="treeview-menu">-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/supplierManage.html',this)"><i class="fa fa-circle-o"></i> 供应商管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/DistributionManage.html',this)"><i class="fa fa-circle-o"></i> 配送单位管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/GoodsManage.html',this)"><i class="fa fa-circle-o"></i> 品名信息管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/GoodsTypeManage.html',this)"><i class="fa fa-circle-o"></i> 品名类别管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/warehouseManage.html',this)"><i class="fa fa-circle-o"></i> 仓库管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/BuyPriceManage.html',this)"><i class="fa fa-circle-o"></i> 采购价格管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/SalesPriceManage.html',this)"><i class="fa fa-circle-o"></i> 销售价格管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/PriceVersionManage.html',this)"><i class="fa fa-circle-o"></i> 价格版本管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/ProcessRateManage.html',this)"><i class="fa fa-circle-o"></i> 产品产出率管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('basic/ProcessMethodManage.html',this)"><i class="fa fa-circle-o"></i> 加工方法管理</a></li>-->
+          <!--</ul>-->
+        <!--</li>-->
+
+        <!--<li class="treeview">-->
+          <!--<a href="#" style="background-image: url(images/系统管理.png);background-repeat: no-repeat; background-position: 10px 12px;background-size: 20px 20px;">-->
+            <!--<i class="fa "></i>-->
+            <!--<span>系统管理</span>-->
+          <!--</a>-->
+          <!--<ul class="treeview-menu">-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('system/orgManage.html',this)"><i class="fa fa-circle-o"></i> 机构管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('system/userManage.html',this)"><i class="fa fa-circle-o"></i> 用户管理</a></li>-->
+            <!--<li><a href="javascript:;" onclick="pageUrl('system/roleManage.html',this)"><i class="fa fa-circle-o"></i> 角色管理</a></li>-->
+          <!--</ul>-->
+        <!--</li>-->
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+  </div>
+</div>
+
+</body>
+</html>
+<style type="text/css">
+  .sidebar-menu>li {
+    font-size: 16px;
+  }
+  tbody tr {
+    background: rgb(255,255,255);
+  }
+  thead tr{
+    background: rgb(226,233,239);
+  }
+  thead {
+    border: 1px solid rgb(211,217,223);
+  }
+  th{
+    border: 1px solid rgb(211,217,223);
+  }
+   td{
+    border: 1px solid rgb(211,217,223);
+  }
+  .loadingDiv_mdtApply{display: none; position: fixed;margin: 0 auto;left: 0;right: 0; z-index: 6;background: #fff;min-width: 980px;max-width: 1200px;top: 37px;min-height: 590px; padding-top: 12%;opacity: 0.8;}
+  .cur{
+    background: rgb(255, 255, 255);
+  }
+  .before{
+    background: rgb(245, 245, 245);
+  }
+  /*li a:hover*/
+  /*{*/
+    /*background:white;!important;*/
+  /*}*/
+</style>
+<script type="application/javascript">
+  $(function(){
+      //decodeURI解码
+      var url = decodeURI(location.search);
+      var theRequest = new Object();
+      if ( url.indexOf( "?" ) != -1 ) {
+          var str = url.substr( 1 ); //substr()方法返回从参数值开始到结束的字符串；
+          var strs = str.split( "&" );
+          for ( var i = 0; i < strs.length; i++ ) {
+              theRequest[ strs[ i ].split( "=" )[ 0 ] ] = ( strs[ i ].split( "=" )[ 1 ] );
+          }
+          console.log( theRequest ); //此时的theRequest就是我们需要的参数；
+          $("#loginName2").text("   "+theRequest.username);
+          debugger;
+          var orgName = theRequest.orgName=="null"?"":theRequest.orgName;
+          var length = orgName.length;
+//          $("#orgName").text("   "+length>8?orgName.substring(0,7)+"...":orgName);
+          $("#orgName").text("   "+orgName);
+          $("#orgName").attr("title",orgName)
+          $("#showSelfInfo").attr("data-id",theRequest.id);
+      }
+      var html ="";
+      if ( theRequest.rolePath.indexOf( "system" ) != -1 ) {
+          html =  html +'<li class="treeview">'+
+              ' <a href="#" style="background-image: url(images/系统管理.png);background-repeat: no-repeat; background-position: 10px 12px;background-size: 20px 20px;">'+
+          '  <i class="fa "></i>'+
+          '   <span>系统管理</span>'+
+          '   </a>'+
+          '  <ul class="treeview-menu">'+
+          '   <li><a href="javascript:;" onclick="pageUrl(\'system/orgManage.html\',this)"><i class="fa fa-circle-o"></i> 机构管理</a></li>'+
+          '   <li><a href="javascript:;" onclick="pageUrl(\'system/userManage.html\',this)"><i class="fa fa-circle-o"></i> 用户管理</a></li>'+
+          '   <li><a href="javascript:;" onclick="pageUrl(\'system/roleManage.html\',this)"><i class="fa fa-circle-o"></i> 角色管理</a></li>'+
+          '   <li><a href="javascript:;" onclick="pageUrl(\'system/configManage.html\',this)"><i class="fa fa-circle-o"></i> 参数配置</a></li>'+
+          '   <li><a href="javascript:;" onclick="pageUrl(\'system/logManage.html\',this)"><i class="fa fa-circle-o"></i> 操作日志</a></li>'+
+
+          '  </ul>'+
+          '    </li>';
+      }
+      $(".sidebar-menu").html(html);
+      $('#init').click(function(){
+          debugger;
+          if (theRequest.flag == "true") {
+              pageUrl('/adminPage.html');
+          }else{
+              pageUrl('/homePage.html')
+          }
+      })
+//      $(".sidebar-menu ul li").eq(0).trigger('click');
+
+//    if(theRequest.page == "999"){
+        pageUrl('system/orgManage.html');
+//    } else{
+//        $('#init').trigger('click');
+//    }
+      $("#btn_logout").click(function(){
+          common.decide("是否退出", function () {
+              if(typeof lotusObject !== 'undefined'){
+                  try {
+                      lotusObject.shutdown();
+                  }catch (e){
+                      console.log(e)
+                  }
+              }else{
+                  location.href="/index.html";
+              }
+          });
+      });
+
+      //修改个人资料
+      $('#showSelfInfo').click(function () {
+          debugger;
+          var userId = $("#showSelfInfo").attr("data-id");
+          updateUserInfo(userId);
+      });
+      $("#saveOrUpdateOrgan1").click(function(){
+          debugger;
+          var loginName = $("#loginName1").val();
+//          var password = $("#password1").val();
+          var userName = $("#userNames1").val();
+          var telephone = $("#telephone1").val();
+          var remark = $("#remark1").val();
+          var sex = $("#sex1").val();
+          var param = {};
+          param['id'] =  $("#id1").val();
+          param['name'] = userName;
+          param['sex'] = sex;
+          param['loginName'] = loginName;
+//          param['loginPwd'] = password;
+          param['mobile'] = telephone;
+          param['remark'] = remark;
+          $.ajax({
+              type: 'post',
+              dataType: 'json',
+              url: '/system/updateUserInfo',
+              data: param,
+              success: function (data) {
+//                  alert("操作成功!");
+                  common.mMessege('1',"操作成功！");
+                  pageUrl("/homePage.html");
+                  $("#adduserLayer1").modal('hide');
+                  $('.modal-backdrop').remove();
+              },
+              error: function (data) {
+                  debugger;
+                  common.mMessege('0', "操作失败");
+              }
+          });
+      });
+      $('#sexLi1 li').on('click',function(){
+          $('#sexLi1 li').css('background','');
+          $(this).css('background','#ccc');
+          $('#dropmenuSex1').html(''+$(this).text()+'<span style="float: right; margin-top: 7px;" class="caret"></span>');
+          $('#sex1').val($(this).attr("value"));
+      });
+      //修改密码
+      $("#changePass").click(function(){
+          $('#oldPwd').val('');
+          $('#newPwd').val('');
+          $('#surePwd').val('');
+          $('#change_pass').modal('show');
+      });
+      //修改密码
+      $("#saveResetPwd").click(function(){
+          var param = {};
+          param["loginName"] = $("#loginName2").text().trim();
+          param["newPwd"] = $("#newPwd").val();
+          param["oldPwd"] = $("#oldPwd").val();
+          param["id"] = $("#showSelfInfo").attr("data-id");
+          var surePwd = $("#surePwd").val();
+          if($("#oldPwd").val()==""){
+              common.mMessege("0","请填写旧密码");
+              return false;
+          }
+          if($("#newPwd").val()==""){
+              common.mMessege("0","请填写新密码");
+              return false;
+          }
+          if($("#surePwd").val()==""){
+              common.mMessege("0","请填写确认密码");
+              return false;
+          }
+          if($("#surePwd").val()!=$("#newPwd").val()){
+              common.mMessege("0","新密码与重复密码不一致!");
+              return false;
+          }
+          //加载右侧的表格信息=======
+          $.post("/system/updPwd",param,
+              function(data){
+              debugger;
+                  if(data.code==1){
+                      common.mMessege("1","密码修改成功！");
+                      $('#change_pass').modal('hide');
+                  }else{
+                      common.mMessege("0",data.msg);
+                  }
+              });
+      });
+  })
+  function updateUserInfo(id){
+      debugger;
+      $("#adduserLayer1 h4").html("修改个人信息");
+      $("#adduserLayer1").modal('show');
+      var userRoles ;
+      $.get("/system/getUserRoleByUserId?userId="+id, function (result2) {
+          debugger;
+          var size = result2.data.length;
+          userRoles = new Array(size)
+          if (size > 0) {
+              $.each(result2.data, function (i, k) {
+                  userRoles[i] = k.roleId;
+              });
+          }
+      });
+      $.get("/system/getUserById?id=" + id, function (result) {
+          var data = result.data;
+          $("#id1").val(data.id);
+          $("#userNames1").val(data.name);
+          $("#sex1").val(data.sex);
+          $('#dropmenuSex1').html(''+data.sex+'<span style="float: right; margin-top: 7px;" class="caret"></span>');
+          $("#loginName1").val(data.loginName);
+//          $("#password1").val(data.loginPwd);
+          $("#telephone1").val(data.mobile);
+          $("#remark1").val(data.remark);
+          $.get("/system/findRoleList", function (result) {
+              if (result.code == '1') {
+                  var data = {total: result.Total, rows: result.Rows};
+                  var html = "";
+                  $.each(data.rows, function (i, n) {
+                      if(n.status == 1){
+                          if($.inArray(n.id+"", userRoles)!=-1 ){
+                              html = html + ' <span>';
+                              html = html + '<input id="' + n.id + '" name="checkedIds" value="' + n.id + '" type="checkbox" class="checkboxoption" checked>';
+                              html = html + '<label class="checkboxLabel" title="' + n.roleName + '" for="' + n.id + '">' + n.roleName + '</label>';
+                              html = html + " </span>";
+                          }
+                          else{
+                              html = html + ' <span>';
+                              html = html + '<input id="' + n.id + '" name="checkedIds" value="' + n.id + '" type="checkbox" class="checkboxoption">';
+                              html = html + '<label class="checkboxLabel" title="' + n.roleName + '" for="' + n.id + '">' + n.roleName + '</label>';
+                              html = html + " </span>";
+                          }
+                      }
+                  });
+              }
+              $("#all_role1 p").html(html);
+          });
+      });
+  }
+  $(".treeview a").click(function(){
+      $(".treeview a").removeClass("cur");
+//      $(".treeview").removeClass("menu-open");
+      $(".sidebar-menu li a").removeClass("cur");
+      $(this).addClass("cur");
+  });
+  function pageUrl(url,a) {
+      $(".treeview a").removeClass("cur");
+      $(".treeview").removeClass("menu-open");
+      $(".sidebar-menu li a").removeClass("cur");
+      $(a).addClass("cur");
+      $(".content-wrapper").html('  <div style="min-height: 682px;" class="loadingDiv loadingDiv_mdtApply">< img src="/images/loading.gif"><p>数据载入中...</p ></div>');
+      if (url.indexOf("?") != -1) {
+          var str = url.substr(url.indexOf("?")+1);
+          var c = str.split("=");
+          $("#stockCheckId").val(c[1]);
+      }else{
+          $("#stockCheckId").val("");
+      }
+      $(".content-wrapper").load(url);
+  }
+</script>
+<input id="stockCheckId" value="" hidden>
+
+

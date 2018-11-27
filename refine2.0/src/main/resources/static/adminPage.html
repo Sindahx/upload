@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../js/www/js/echarts1.js"></script>
+</head>
+<style type="text/css">
+    .pStyle {
+        font-size: 20px;
+        padding-left: 20px;
+        font-weight: bolder;
+        color: rgb(51,51,51);
+        background-image: url(images/u2199.png);
+        background-repeat: no-repeat;
+        background-position: 20px 30px;
+        background-size: 1430px 6px;
+        height: 40px;
+    }
+    .pic {
+        float: left;
+        background-repeat: no-repeat;
+        background-position: 20px 0px;
+        background-size: 290px 122px;
+        height: 150px;
+        width: 330px;
+    }
+    .leftPic {
+        background-repeat: no-repeat;
+        height: 100px;
+        width: 80px;
+        position: absolute;
+        margin-left: 40px;
+        margin-top: 16px;
+        background-size: 50px 50px;
+        float: left;
+    }
+    #order{
+        background-image: url(images/订单金额.jpg);
+    }
+    #purchase{
+        background-image: url(images/采购金额.jpg);
+    }
+    #grossProfit{
+        background-image: url(images/毛利收入.jpg);
+    }
+    #stock{
+        background-image: url(images/库存金额.jpg);
+    }
+    .rightPic {
+        color: white;
+        float: right;
+        margin-right: 40px;
+        padding-top: 10px;
+    }
+    .totalPic {
+        font-weight: bolder;
+        font-size: 30px;
+    }
+    .titlePic {
+        float: right;
+        font-weight: 600;
+        font-size: 17px;
+        padding-right: 8px;
+    }
+    .two {
+        margin-top: 150px;
+    }
+    .leftGraphics {
+        float: left;
+        margin-left: 20px;
+    }
+    .echartOne {
+        width: 870px;
+        border: 2px solid rgb(233,233,233);
+        height: 300px;
+        margin-top: 40px;
+    }
+    .graphics {
+        margin-top: -40px;
+    }
+    .echartTwo {
+        width: 400px;
+        border: 2px solid rgb(233,233,233);
+        height: 300px;
+        margin-top: 40px;
+    }
+    .top {
+        height: 40px;
+        padding-top: 10px;
+        padding-left: 20px;
+        border-bottom: 2px solid rgb(233,233,233);
+        background-color: rgb(245,245,245);
+    }
+    div.back {
+        height: 18px;
+        background-color: rgb(0,153,255);
+        display: inline-block;
+        margin-right: 30px;
+    }
+    div#pieEcharts {
+        width: 400px;
+        height: 257px;
+        /*background-color: rgb(247,247,247);*/
+    }
+    .cur{
+        color: blue;
+    }
+    .content {
+        padding-top: 95px;
+        padding-left: 40px;
+    }
+</style>
+<body>
+    <div class="one" style="    margin-top: 20px;">
+        <div><p class="pStyle">今日数据</p></div>
+        <div>
+            <div class="pic" id="order">
+                <div class="leftPic" style=" background-image: url(images/u2201.png);"></div>
+                <div class="rightPic">
+                    <div class="totalPic" id="orderPrice"></div>
+                    <div class="titlePic">订单金额</div>
+                </div>
+                <div class="content" id="orderPriceCurMonth">本月订单金额<strong></strong></div>
+            </div>
+            <div class="pic" id="purchase">
+                <div class="leftPic"style=" background-image: url(images/u2202.png);"></div>
+                <div class="rightPic">
+                    <div class="totalPic" id="purchasePrice"></div>
+                    <div class="titlePic">采购金额</div>
+                </div>
+                <div class="content" id="purchasePriceCurMonth">本月采购金额<strong></strong></div>
+            </div>
+            <div class="pic" id="grossProfit">
+                <div class="leftPic" style=" background-image: url(images/u2207.png);"></div>
+                <div class="rightPic">
+                    <div class="totalPic" id="grossProfitPrice"></div>
+                    <div class="titlePic">毛利收入</div>
+                </div>
+                <div class="content" id="grossProfitPriceCurMonth">本月毛利收入<strong></strong></div>
+            </div>
+            <div class="pic" id="stock">
+                <div class="leftPic" style=" background-image: url(images/u2210.png);"></div>
+                <div class="rightPic">
+                    <div class="totalPic" id="stockPrice"></div>
+                    <div class="titlePic">库存金额</div>
+                </div>
+            </div>
+        </div>
+        <div class="two"><p class="pStyle">运营数据</p></div>
+        <div class="graphics">
+            <div class="leftGraphics">
+                <div class="echartOne">
+                    <div class="top">
+                        <span>收支数据</span>
+                        <a href="javascript:void(0);" id="week" style="text-decoration: none;color:blue;">
+                          <span style=" padding-left: 560px;"> 过去7天 </span>
+                        </a>
+                        <a href="javascript:void(0);" id="month" style="text-decoration: none;color:black;">
+                            <span style=" padding-left: 20px;"> 近一个月 </span>
+                        </a>
+                        <a href="javascript:void(0);" id="halfYear" style="text-decoration: none;color:black;">
+                            <span style=" padding-left: 20px;"> 近半年 </span>
+                        </a>
+                    </div>
+                    <div id="areaEcharts" style="height: 290px;width: 940px;margin-left: -20px;">
+                    </div>
+                </div>
+                <div class="echartOne">
+                    <div class="top">
+                        <span >产品采购价格</span>
+                        <a href="javascript:void(0);" id="weekProduct" style="text-decoration: none;color:blue;">
+                            <span style=" padding-left: 530px;"> 过去7天 </span>
+                        </a>
+                        <a href="javascript:void(0);" id="monthProduct" style="text-decoration: none;color:black;">
+                            <span style=" padding-left: 20px;"> 近一个月 </span>
+                        </a>
+                        <a href="javascript:void(0);" id="halfYearProduct" style="text-decoration: none;color:black;">
+                            <span style=" padding-left: 20px;"> 近半年 </span>
+                         </a>
+                    </div>
+                    <div id="lineEcharts" style="height: 290px;width: 940px;margin-left: -20px;">
+                    </div>
+                </div>
+            </div>
+            <div class="leftGraphics">
+
+                <div class="echartTwo">
+                    <div class="top">
+                        <span>配送排行</span>
+                        <a href="javascript:void(0);" id="todayRank" style="text-decoration: none;color:blue;">   <span style=" padding-left: 250px;"> 今日 </span>
+                        </a>
+                    </div>
+                    <div id="psRank">
+                    </div>
+                </div>
+                <div class="echartTwo">
+                    <div class="top">
+                        <span>配送类别分布</span>
+                    </div>
+                    <div id="pieEcharts">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
+<script type="application/javascript">
+    $(function(){
+        debugger;
+        $.get("/stock/getStockTotalPrice",function(result){
+               var total = result.data;
+               $("#stockPrice").html("￥"+total);
+        });
+        $.get("/order/getOrderAmounts",function(result){
+            debugger;
+            var total = result.data[0].amounts;
+            var totalCurMonth = result.data[1].amounts;
+            $("#orderPrice").html("￥"+total);
+            $("#orderPriceCurMonth strong").html("  ￥"+ totalCurMonth);
+            $.get("/buyPrice/getPurchasePrice",function(result2){
+                var total2 = result2.data[0].amounts;
+                var totalCurMonth2 = result2.data[1].amounts;
+                $("#purchasePrice").html("￥"+total2);
+                $("#purchasePriceCurMonth strong").html("  ￥"+ totalCurMonth2);
+                $("#grossProfitPrice").html("￥"+(total-total2));
+                $("#grossProfitPriceCurMonth strong").html("  ￥"+ (totalCurMonth - totalCurMonth2));
+            });
+        });
+
+
+        $.get("/buyPrice/purchaseAndSalesPriceWeek",function(result){
+            var data = result.data;
+            purchaseAndSalesPrice(data,"week");
+        })
+
+        $.get("/buyPrice/purchaseWeek",function(result){
+            var data = result.data;
+            purchaseWeek(data,"week");
+        });
+        $.get('/distribution/getRank', function (result) {
+            $("#psRank").empty();
+            var data = result.data;
+            var html = "<table style='width: 350px;    margin-left: 20px;'>"
+            var total = 0;
+            $.each(data, function (i, n) {
+                if (total < n.cur) {
+                    total = n.cur;
+                }
+            });
+            var count = 0;
+            var percent = 0;
+            $.each(data, function (i, n) {
+                if (i + 1 < 10) {
+                    count = "0" + (i + 1);
+                } else {
+                    count = i + 1;
+                }
+                if (total > 0) {
+                    percent = n.cur / total * 60;
+                }
+                if(i%2==0){
+                    html = html + "<tr style=\"line-height: 1\"> <td style=\"padding:10px; border: 0px solid rgb(211,217,223)\">" + count + "</td> <td style=' border: 0px solid rgb(211,217,223)'>" + n.name + "</td> <td style=' border: 0px solid rgb(211,217,223)'><div class=\"back\" style=\"width:" + percent + "%;\"></div>" + n.cur + "</td> </tr>"
+                }else{
+                    html = html + "<tr style=\"line-height: 0.1\"> <td style=\"padding:10px; border: 0px solid rgb(211,217,223)\">" + count + "</td> <td style=' border: 0px solid rgb(211,217,223)'>" + n.name + "</td> <td style=' border: 0px solid rgb(211,217,223)'><div class=\"back\" style=\"width:" + percent + "%;\"></div>" + n.cur + "</td> </tr>"
+
+                }
+            });
+            html += "</table>";
+            $("#psRank").html(html);
+        });
+
+        $.get("/productType/getOrderPt",function(result){
+            pie(result);
+        });
+        $("#weekProduct").click(function(){
+            $("#halfYearProduct").css("color","black");
+            $("#monthProduct").css("color","black");
+            $("#weekProduct").css("color","blue");
+            $.get("/buyPrice/purchaseWeek",function(result){
+                var data = result.data;
+                purchaseWeek(data,"week");
+            })
+        })
+        $("#monthProduct").click(function(){
+            $("#halfYearProduct").css("color","black");
+            $("#monthProduct").css("color","blue");
+            $("#weekProduct").css("color","black");
+            $.get("/buyPrice/purchaseMonth",function(result){
+                debugger;
+                var data = result.data;
+                purchaseWeek(data,"month");
+            });
+        })
+        $("#halfYearProduct").click(function(){
+            $("#halfYearProduct").css("color","blue");
+            $("#monthProduct").css("color","black");
+            $("#weekProduct").css("color","black");
+            $.get("/buyPrice/purchaseHalfYear",function(result){
+                var data = result.data;
+                purchaseWeek(data,"half");
+            });
+        })
+        $("#month").click(function(){
+            $("#halfYear").css("color","black");
+            $("#month").css("color","blue");
+            $("#week").css("color","black");
+            $.get("/buyPrice/purchaseAndSalesPriceMonth",function(result){
+                var data = result.data;
+                purchaseAndSalesPrice(data,"month");
+            })
+        })
+        $("#week").click(function(){
+            $("#halfYear").css("color","black");
+            $("#month").css("color","black");
+            $("#week").css("color","blue");
+            $.get("/buyPrice/purchaseAndSalesPriceWeek",function(result){
+                var data = result.data;
+                purchaseAndSalesPrice(data,"week");
+            })
+        })
+        $("#halfYear").click(function(){
+            $("#halfYear").css("color","blue");
+            $("#month").css("color","black");
+            $("#week").css("color","black");
+            $.get("/buyPrice/purchaseAndSalesPriceHalfYear",function(result){
+                var data = result.data;
+                purchaseAndSalesPrice(data,"half");
+            })
+        })
+    })
+    function purchaseWeek(data,type){
+        var x = new Array();
+        var objD = new Date();
+        var j=0;
+        var size = data.length;
+        var datas = [];
+        var names=new Array();
+        if(type=="week" || type=="half"){
+            if(type=="week"){
+                for(var i=6;i>=0;i--){
+                    var  cdt = new Date(objD.getTime()-1000*60*60*24*i);
+                    var dd = cdt.getDate();
+                    x[j] = dd;
+                    j++;
+                }
+            }
+            if(type=="half"){
+                for(var i=6;i>=0;i--){
+                    var  cdt = new Date(objD.getTime()-1000*60*60*24*30*i);
+                    var dd = cdt.getMonth()+1;
+                    x[j] = cdt.getFullYear()+"-"+dd;
+                    j++;
+                }
+            }
+            for(var i=0 ; i < size ;i ++) {
+                var y = new Array();
+                y[0] = data[i].ONE;
+                y[1] = data[i].TWO;
+                y[2] = data[i].THREE;
+                y[3] = data[i].FOUR;
+                y[4] = data[i].FIVE;
+                y[5] = data[i].SIX;
+                y[6] = data[i].SEVEN;
+                datas.push({name: data[i].NAME, type: 'line', data: y});
+                names[i] = data[i].NAME;
+            }
+        }
+        if(type=="month"){
+            for(var i=30;i>=0;i--){
+                var  cdt = new Date(objD.getTime()-1000*60*60*24*i);
+                var dd = cdt.getDate();
+                x[j] = dd;
+                j++;
+            }
+            for(var i=0 ; i < size ;i ++) {
+                var y = new Array();
+                y[0] = data[i].ONE;
+                y[1] = data[i].TWO;
+                y[2] = data[i].THREE;
+                y[3] = data[i].FOUR;
+                y[4] = data[i].FIVE;
+                y[5] = data[i].SIX;
+                y[6] = data[i].SEVEN;
+                y[7] = data[i].EIGHT;
+                y[8] = data[i].NINE;
+                y[9] = data[i].TEN;
+                y[10] = data[i].ELEVEN;
+                y[11] = data[i].TWELVE;
+                y[12] = data[i].THIRTEEN;
+                y[13] = data[i].FOURTEEN;
+                y[14] = data[i].FIFTEEN;
+                y[15] = data[i].SIXTEEN;
+                y[16] = data[i].SEVENTEEN;
+                y[17] = data[i].EIGHTEEN;
+                y[18] = data[i].NINETEEN;
+                y[19] = data[i].TWENTY;
+                y[20] = data[i].TWENTYONE;
+                y[21] = data[i].TWENTYTWO;
+                y[22] = data[i].TWENTYTHREE;
+                y[23] = data[i].TWENTYFOUR;
+                y[24] = data[i].TWENTYFIVE;
+                y[25] = data[i].TWENTYSIX;
+                y[26] = data[i].TWENTYSEVEN;
+                y[27] = data[i].TWENTYEIGHT;
+                y[28] = data[i].TWENTYNINE;
+                y[29] = data[i].THIRTY;
+                datas.push({name: data[i].NAME, type: 'line', data: y});
+                names[i] = data[i].NAME;
+            }
+        }
+
+        var myChartOneWeek2;
+        var optionOneWeek2 = {
+            legend: {
+                orient: 'horizontal',      // 布局方式，默认为水平布局，可选为：
+                                           // 'horizontal' ¦ 'vertical'
+                x: 'center',               // 水平安放位置，默认为全图居中，可选为：
+                                           // 'center' ¦ 'left' ¦ 'right'
+                                           // ¦ {number}（x坐标，单位px）
+                y: 'top',                  // 垂直安放位置，默认为全图顶端，可选为：
+                                           // 'top' ¦ 'bottom' ¦ 'center'
+                                           // ¦ {number}（y坐标，单位px）
+                backgroundColor: 'rgba(0,0,0,0)',
+                borderColor: '#ccc',       // 图例边框颜色
+                borderWidth: 0,            // 图例边框线宽，单位px，默认为0（无边框）
+                padding: 5,                // 图例内边距，单位px，默认各方向内边距为5，
+                                           // 接受数组分别设定上右下左边距，同css
+                itemGap: 10,               // 各个item之间的间隔，单位px，默认为10，
+                                           // 横向布局时为水平间隔，纵向布局时为纵向间隔
+                itemWidth: 20,             // 图例图形宽度
+                itemHeight: 14,            // 图例图形高度
+                textStyle: {
+                    color: '#333' ,         // 图例文字颜色
+                    fontsize:18
+                },
+                data:names
+            },
+            title : {
+                text:""
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            grid:{
+                show:true,
+                borderWidth:'0'
+            },
+            toolbox: {
+                show :  false,
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    splitLine:{
+                        show:false
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            fontSize: '18',
+                            color:'black'
+                        }
+                    },
+                    data : x
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    axisLabel: {
+                        textStyle: {
+                            fontSize: '18',
+                            color:'black'
+                        }
+                    },
+                    splitLine:{
+                        show:false
+                    },
+
+                }
+            ],
+            series : datas
+        };
+        require.config({
+            paths: {
+                echarts: 'js/www/js'
+            }
+        });
+        require(
+            [
+                'echarts',
+                'echarts/chart/line'
+            ],
+            function(ec){
+                var node2 = document.getElementById('lineEcharts');
+                myChartOneWeek2 = ec.init(node2);
+                myChartOneWeek2.setOption(optionOneWeek2);
+            }
+        );
+    }
+
+
+    function purchaseAndSalesPrice(data,type){
+        var x = new Array();
+
+        var objD = new Date();
+        var j=0;
+        var y = new Array();
+        var y1 = new Array();
+        if(type=="week" || type=="half" ){
+            if(type=="week"){
+                for(var i=6;i>=0;i--){
+                    var  cdt = new Date(objD.getTime()-1000*60*60*24*i);
+                    var dd = cdt.getDate();
+                    x[j] = dd;
+                    j++;
+                }
+            }
+            if(type=="half"){
+                for(var i=6;i>=0;i--){
+                    var  cdt = new Date(objD.getTime()-1000*60*60*24*30*i);
+                    var dd = cdt.getMonth()+1;
+                    x[j] = cdt.getFullYear()+"-"+dd;
+                    j++;
+                }
+            }
+            y[0] = data[0].ONE;
+            y[1] = data[0].TWO;
+            y[2] = data[0].THREE;
+            y[3] = data[0].FOUR;
+            y[4] = data[0].FIVE;
+            y[5] = data[0].SIX;
+            y[6] = data[0].SEVEN;
+            y1[0] = data[1].ONE;
+            y1[1] = data[1].TWO;
+            y1[2] = data[1].THREE;
+            y1[3] = data[1].FOUR;
+            y1[4] = data[1].FIVE;
+            y1[5] = data[1].SIX;
+            y1[6] = data[1].SEVEN;
+        }
+        if(type=="month"){
+            for(var i=30;i>=0;i--){
+                var  cdt = new Date(objD.getTime()-1000*60*60*24*i);
+                var dd = cdt.getDate();
+                x[j] = dd;
+                j++;
+            }
+                y[0] = data[0].ONE;
+                y[1] = data[0].TWO;
+                y[2] = data[0].THREE;
+                y[3] = data[0].FOUR;
+                y[4] = data[0].FIVE;
+                y[5] = data[0].SIX;
+                y[6] = data[0].SEVEN;
+                y[7] = data[0].EIGHT;
+                y[8] = data[0].NINE;
+                y[9] = data[0].TEN;
+                y[10] = data[0].ELEVEN;
+                y[11] = data[0].TWELVE;
+                y[12] = data[0].THIRTEEN;
+                y[13] = data[0].FOURTEEN;
+                y[14] = data[0].FIFTEEN;
+                y[15] = data[0].SIXTEEN;
+                y[16] = data[0].SEVENTEEN;
+                y[17] = data[0].EIGHTEEN;
+                y[18] = data[0].NINETEEN;
+                y[19] = data[0].TWENTY;
+                y[20] = data[0].TWENTYONE;
+                y[21] = data[0].TWENTYTWO;
+                y[22] = data[0].TWENTYTHREE;
+                y[23] = data[0].TWENTYFOUR;
+                y[24] = data[0].TWENTYFIVE;
+                y[25] = data[0].TWENTYSIX;
+                y[26] = data[0].TWENTYSEVEN;
+                y[27] = data[0].TWENTYEIGHT;
+                y[28] = data[0].TWENTYNINE;
+                y[29] = data[0].THIRTY;
+            y1[0] = data[1].ONE;
+            y1[1] = data[1].TWO;
+            y1[2] = data[1].THREE;
+            y1[3] = data[1].FOUR;
+            y1[4] = data[1].FIVE;
+            y1[5] = data[1].SIX;
+            y1[6] = data[1].SEVEN;
+            y1[7] = data[1].EIGHT;
+            y1[8] = data[1].NINE;
+            y1[9] = data[1].TEN;
+            y1[10] = data[1].ELEVEN;
+            y1[11] = data[1].TWELVE;
+            y1[12] = data[1].THIRTEEN;
+            y1[13] = data[1].FOURTEEN;
+            y1[14] = data[1].FIFTEEN;
+            y1[15] = data[1].SIXTEEN;
+            y1[16] = data[1].SEVENTEEN;
+            y1[17] = data[1].EIGHTEEN;
+            y1[18] = data[1].NINETEEN;
+            y1[19] = data[1].TWENTY;
+            y1[20] = data[1].TWENTYONE;
+            y1[21] = data[1].TWENTYTWO;
+            y1[22] = data[1].TWENTYTHREE;
+            y1[23] = data[1].TWENTYFOUR;
+            y1[24] = data[1].TWENTYFIVE;
+            y1[25] = data[1].TWENTYSIX;
+            y1[26] = data[1].TWENTYSEVEN;
+            y1[27] = data[1].TWENTYEIGHT;
+            y1[28] = data[1].TWENTYNINE;
+            y1[29] = data[1].THIRTY;
+        }
+        var myChartOneWeek;
+        var optionOneWeek = {
+            legend: {
+                orient: 'horizontal',      // 布局方式，默认为水平布局，可选为：
+                                           // 'horizontal' ¦ 'vertical'
+                x: 'center',               // 水平安放位置，默认为全图居中，可选为：
+                                           // 'center' ¦ 'left' ¦ 'right'
+                                           // ¦ {number}（x坐标，单位px）
+                y: 'top',                  // 垂直安放位置，默认为全图顶端，可选为：
+                                           // 'top' ¦ 'bottom' ¦ 'center'
+                                           // ¦ {number}（y坐标，单位px）
+                backgroundColor: 'rgba(0,0,0,0)',
+                borderColor: '#ccc',       // 图例边框颜色
+                borderWidth: 0,            // 图例边框线宽，单位px，默认为0（无边框）
+                padding: 5,                // 图例内边距，单位px，默认各方向内边距为5，
+                                           // 接受数组分别设定上右下左边距，同css
+                itemGap: 10,               // 各个item之间的间隔，单位px，默认为10，
+                                           // 横向布局时为水平间隔，纵向布局时为纵向间隔
+                itemWidth: 20,             // 图例图形宽度
+                itemHeight: 14,            // 图例图形高度
+                textStyle: {
+                    color: '#333'          // 图例文字颜色
+                },
+                data:['收入','支出']
+            },
+            title : {
+                text:""
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            grid:{
+                show:true,
+                borderWidth:'0'
+            },
+            toolbox: {
+                show :  false,
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    splitLine:{
+                        show:false
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            fontSize: '18',
+                            color:'black'
+                        }
+                    },
+                    data : x
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    axisLabel: {
+                        textStyle: {
+                            fontSize: '18',
+                            color:'black'
+                        }
+                    },
+                    splitLine:{
+                        show:false
+                    },
+
+                }
+            ],
+            series : [
+                {
+                    name: '收入',
+                    type: 'line',
+                    smooth:true,
+                    itemStyle: {
+                        normal: {
+                            color: 'RGB(46,199,201)',
+                            areaStyle: {type: 'default',color:'rgba(2,183,253,0.5)' }
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                            opacity: 0.5
+                        }
+                    },
+                    data: y,
+                },
+                {
+                    name: '支出',
+                    type: 'line',
+                    smooth:true,
+                    itemStyle: {
+                        normal: {
+                            color: 'rgb(216,122,128)',
+                            areaStyle: {type: 'default',color:'rgba(213,203,233,0.5)' }
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                            opacity: 0.5
+                        }
+                    },
+                    data: y1,
+                }
+            ]
+        };
+        require.config({
+            paths: {
+                echarts: 'js/www/js'
+            }
+        });
+        require(
+            [
+                'echarts',
+                'echarts/chart/line'
+            ],
+            function(ec){
+                var node = document.getElementById('areaEcharts');
+                myChartOneWeek = ec.init(node);
+                myChartOneWeek.setOption(optionOneWeek);
+            }
+        );
+    }
+
+    function pie(data){
+        var myChartTwo2;
+        ychzList =  data.data;
+        areaList =  data.name;
+        require.config({
+            paths: {
+                echarts: '${ctx}/js/www/js'
+            }
+        });
+
+        var columName = new Array();
+        var  json = new Array();
+        var y = new Array();
+        var length = data.length;
+        var name="";
+        for(var i=0;i<areaList.length;i++){
+            for(var j=0;j<ychzList.length;j++) {
+                if(areaList[i].NAME == ychzList[j].NAME){
+                    y[i] = ychzList[j].count;
+                    break;
+                }else{
+                    y[i]=0;
+                }
+            }
+            json.push({value:y[i],name:areaList[i].NAME});
+        }
+        var optionTwo2 = {
+//            backgroundColor: 'rgb(247,247,247)',//背景色
+            title : {
+                text: ""
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} 个"
+            },
+
+            toolbox: {
+                show :  false,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {
+                        show: true,
+                        type: ['pie'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            series : [
+                {
+                    name:"",
+                    type:'pie',
+                    radius : '55%',//饼图的半径大小
+                    center: ['50%', '50%'],//饼图的位置
+                    stillShowZeroSum:false,
+                    itemStyle: {
+                        normal:{
+                            color: function (params){
+                                var colorList = ['rgb(216,122,128)','rgb(46,199,201)','rgb(182,162,222)','rgb(90,177,239)','rgb(255,185,128)'];
+                                return colorList[params.dataIndex];
+                            },
+                            label:{
+                                show: true,
+                                formatter: '{b}'
+                            },
+                            labelLine :{show:true}
+                        }
+                    },
+                    label : {
+                        normal : {
+                            textStyle : {
+                                fontWeight : 'normal',
+                                fontSize : 15
+                            }
+                        }
+                    },
+                    data:json
+                }
+            ]
+        };
+        require.config({
+            paths: {
+                echarts: 'js/www/js'
+            }
+        });
+        require(
+            [
+                'echarts',
+                'echarts/chart/pie'
+            ],
+            function(ec){
+                var node2 = document.getElementById('pieEcharts');
+                myChartTwo2 = ec.init(node2);
+                myChartTwo2.setOption(optionTwo2);
+            }
+        );
+    }
+</script>

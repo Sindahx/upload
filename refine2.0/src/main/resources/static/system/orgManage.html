@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title</title>
+     <script type="text/javascript" src="../js/common/common.js"></script>
+</head>
+<style type="text/css">
+    .modal-dialog{
+        width:1000px;margin: 120px auto;
+    }
+    .modal-dialog.small-dialog{
+        width:600px;
+    }
+    .bootstrap-table {
+        padding-top: 20px;
+        padding-left: 20px;
+        width: 99%;
+    }
+    h4 {
+        margin: auto;
+        padding-top: 10px;
+        padding-left: 30px;
+        font-size: 15px;
+    }
+    #add {
+        background-image: url(images/新增.png);
+        background-repeat: no-repeat;
+        background-position: 12px 10px;
+        background-size: 16px;
+    }
+    .topBar{
+        border: 1px solid rgb(238,243,248);
+        background: rgb(248,250,252);
+        width: 97.5%;
+        margin-top: 20px;
+        height: 40px;
+        margin-left: 20px;
+    }
+    .addHosBtn {
+        float: left;
+        margin-left: 20px;
+        height: 38px;
+        cursor:pointer;
+    }
+</style>
+<body>
+<div class="topBar">
+    <div class="addHosBtn" id="add"><h4>新增</h4></div>
+</div>
+
+<table id="table"></table>
+<div class="modal" id="hospitalLayer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="btn-default">&times;</span></button>
+                <h4 class="modal-title">机构注册申请</h4>
+            </div>
+            <div class="modal-body">
+                <div id="layer_doctorG" class="addHoslayerWrap">
+
+                    <div class="clearfix">
+                        <form id="mainForm"  method="post" class="add_roleRge form-horizontal" style="margin-left:0;margin-right:40px">
+                            <table class="addhostable" style="line-height: 34px;width:920px">
+                                <input type="hidden" id="id" value="">
+                                <input type="text"  id="org_code" hidden>
+                                <tbody>
+                                <tr>
+                                    <td class="tdTitleWidth" align="right"><span style="color:red">*</span><span>机构名称</span><span>：</span></td>
+                                    <td class="tdContWidth"><input type="text" class="form-control pull-left" name="org_name" id="org_name" style="width:300px;" data-rule="notEmpty,max:30,min:1,special" errmsg="机构名称应由1-30个字符组成"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitleWidth" align="right"><span style="color:red">*</span><span>机构等级</span><span>：</span></td>
+                                    <td class="tdContWidth" align="left">
+                                        <input type="hidden" class="form-control pull-left" name="org_level" id="org_level" style="width:300px;" data-rule="notEmpty" errmsg="机构等级不能为空">
+                                        <div id="orgSelectInput">
+                                            <div class="input-group-btn">
+                                                <button id="dropmenuOrg" class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown" style="text-align:left; width:300px;">
+                                                    请选择机构等级<span style="float: right; margin-top: 7px;" class="caret"></span>
+                                                </button>
+                                                <ul id="orgLi" class="dropdown-menu" role="menu" style="width:87%;;max-height:320px;overflow-y:auto;">
+                                                    <li value="" ><a href="javascript:">请选择机构等级</a></li>
+                                                    <li value="VIP" ><a href="javascript:">VIP</a></li>
+                                                    <li value="普通" ><a href="javascript:">普通</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="tdTitleWidth" align="right"><span style="color:red">*</span><span>状态</span><span>：</span></td>
+                                    <td class="tdContWidth" align="left" style="    padding-top: 10px;">
+                                        <input type="hidden" id="status" name="status" data-rule="notEmpty" errmsg="状态不能为空" value="">
+                                        <div id="deptSelectInput">
+                                            <div class="input-group-btn">
+                                                <button id="dropmenuDept" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" style="text-align:left; width:300px;">
+                                                    请选择状态<span style="float: right; margin-top: 7px;" class="caret"></span>
+                                                </button>
+                                                <ul id="statusLi" class="dropdown-menu" role="menu" style="width:87%;;max-height:320px;overflow-y:auto;">
+                                                    <li value="" ><a href="javascript:">请选择状态</a></li>
+                                                    <li value="1" ><a href="javascript:">有效</a></li>
+                                                    <li value="0" ><a href="javascript:">无效</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitleWidth" align="right"><span>联系人：</span></td>
+                                    <td class="tdContWidth"><input type="text"  class="form-control" name="contact" id="contact"  style="width:300px;"></td>
+                                    <td class="tdTitleWidth" align="right"><span style="color:red">*</span><span>电话</span><span>：</span></td>
+                                    <td class="tdContWidth"><input type="text" class="form-control" name="tel" id="tel" style="width:300px;" data-rule="notEmpty,phone" errmsg="电话号码不能为空"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitleWidth" align="right"><span>官网：</span></td>
+                                    <td class="tdContWidth"><input type="text"  class="form-control" name="website" id="website" style="width:300px;"></td>
+                                    <td class="tdTitleWidth" align="right"><span style="color:red">*</span><span>地址</span><span>：</span></td>
+                                    <td class="tdContWidth"><input type="text"  class="form-control" name="address" id="address" style="width:300px;" data-rule="notEmpty" errmsg="地址不能为空"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitleWidth" align="right"><span style="color:red">*</span><span>签约开始时间</span><span>：</span></td>
+                                    <td class="tdContWidth">
+                                        <input type="text" class="form-control date-picker form-control-left" name="sign_begintime" id="sign_begintime3" style="width:300px;" readonly="true"  data-rule="notEmpty" errmsg="请选择签约开始时间"/>
+                                    </td>
+                                    <td class="tdTitleWidth" align="right"><span style="color:red">*</span><span>签约结束时间</span><span>：</span></td>
+                                    <td class="tdContWidth">
+                                        <input type="text" class="form-control date-picker form-control-right" name="sign_endtime" id="sign_endtime3" style="width:300px;" readonly="true"  data-rule="notEmpty" errmsg="请选择签约结束时间"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tdTitleWidth" align="right"><span>机构介绍：</span></td>
+                                    <td class="tdContWidth" align="left" colspan="3"><textarea name="remark" id="remark" style="width:763px;" rows="2" cols="20" maxlength="500" class="form-control"></textarea></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center;">
+                <button type="button" class="btn btn-primary tobaoc" id="saveOrUpdOrg">提交</button>
+                <button type="button" class="btn btn-default closeModel" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade" id="deptLayer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">部门管理</h4>
+            </div>
+            <div class="modal-body">
+                <div id="rightDeptMgr" class="ksglCont">
+                    <form id="mainForm2"  method="post" class="add_roleRge form-horizontal" style="margin-left:8px;margin-right:0px">
+                        <dl>
+                            <dt>添加部门</dt>
+                            <dd>
+                                <div style="display:none;">
+                                    <span style="color:red">*</span>部门编码：
+                                    <input type="textdis" name="deptCode" class="form-control" id="deptCode" style="width:120px;display: inline"  data-rule="notEmpty" errmsg="部门编码不能为空">
+                                    <span style="color:red">*</span>部门名称：
+                                    <input type="text" class="form-control" name="deptName" id="deptName" style="width:220px;display: inline" data-rule="notEmpty" errmsg="部门名称不能为空">
+                                </div>
+                                <div class="addKslist">
+                                    <storng><span style="color:red">*</span>部门信息：</storng>
+                                    <textarea class="form-control" rows="8" name="deptText" id="deptText"></textarea>
+                                    <span id="isLotusSpan">（数据添加格式为：部门编码，部门名称；部门编码，部门名称；···）</span>
+                                </div>
+                                <div class="clearfix">
+                                    <a style="margin-right:10px;" href="javascript:javascript:void(0);" class="btn btn-primary " id="deptAdd">保存</a>
+                                    <a style="display: none;" href="javascript:javascript:void(0);" class="btn btn-primary " id="deptEmpty">清空</a>
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>部门列表</dt>
+                            <dd>
+                                <input id="deptListValue" type="hidden" value="">
+                                <div id="deptList" style="width: 100%;font-style: inherit;">
+
+                                </div>
+                            </dd>
+                        </dl>
+                        <div class="clearfix">
+                            <a style="margin-right: 10px;" href="javascript:javascript:void(0);" class="btn btn-primary " id="deptDelSelect">删除选中项</a>
+                            <!--<a style="margin-right: 10px;" href="javascript:javascript:void(0);" class="btn btn-primary " id="deptSelectOrNot">全选/全不选</a>-->
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+</body>
+</html>
+<script type="application/javascript">
+    $(function(){
+        initTable(null);
+        $("#add").click(function(){
+            $("#hospitalLayer h4").html("新增机构信息");
+            $("#hospitalLayer").modal('show');
+        });
+        var curDate3 = new Date();
+        var cuDateStr3 = curDate3.getFullYear()+'-'+(curDate3.getMonth()+1)+'-'+curDate3.getDate();
+        $('#sign_begintime3').datepicker({
+            format: "yyyy-mm-dd",
+            todayBtn : "linked",
+            autoclose : true,
+            todayHighlight : true,
+            language:"zh-CN",
+            minView: "month"
+//            endDate : new Date()
+        }).on('hide',function (event) {
+            event.preventDefault()
+            event.stopPropagation();
+        });
+        $('#sign_endtime3').datepicker('remove');
+        $('#sign_endtime3').datepicker({
+            format: "yyyy-mm-dd",
+            todayBtn : "linked",
+            autoclose : true,
+            todayHighlight : true,
+            startDate:cuDateStr3,
+            language:"zh-CN",
+            minView: "month"
+//            endDate : new Date()
+        }).on('hide',function (event) {
+            event.preventDefault()
+            event.stopPropagation();
+        });
+        $('#statusLi li').on('click',function(){
+            $('#statusLi li').css('background','');
+            $(this).css('background','#ccc');
+            $('#dropmenuDept').html(''+$(this).text()+'<span style="float: right; margin-top: 7px;" class="caret"></span>');
+            $('#status').val($(this).attr("value"));
+        });
+        $('#orgLi li').on('click',function(){
+            $('#orgLi li').css('background','');
+            $(this).css('background','#ccc');
+            $('#dropmenuOrg').html(''+$(this).text()+'<span style="float: right; margin-top: 7px;" class="caret"></span>');
+            $('#org_level').val($(this).attr("value"));
+        });
+
+        $(".search_doctorBtn").click(function(){
+            var params = {};
+            params["contact"] = $("#contactName").val();
+            params["orgCode"] = $("#orgInfo").val();
+            params["deptCode"] = $("#department").val();
+            initTable(params);
+        });
+        $("#saveOrUpdOrg").click(function () {
+//            if($("#org_code").val() == null || $("#org_code").val() == ""){
+//                common.mMessege('0',"请选择机构编码");
+//                return;
+//            }
+            if( $("#org_level").val() == null ||  $("#org_level").val() == ""){
+                common.mMessege('0',"请选择机构等级");
+                return;
+            }
+            if($("#org_name").val() == null || $("#org_name").val() == ""){
+                common.mMessege('0',"请选择机构名称");
+                return;
+            }
+            if($("#sign_begintime3").val() == null || $("#sign_begintime3").val() == ""){
+                common.mMessege('0',"请选择签约开始时间");
+                return;
+            }
+            if( $("#sign_endtime3").val() == null ||  $("#sign_endtime3").val() == ""){
+                common.mMessege('0',"请选择签约结束时间");
+                return;
+            }
+            debugger;
+            var params = {};
+            params["id"] = $("#id").val();
+            params["orgCode"] = $("#org_code").val();
+            params["orgLevel"] =  $("#org_level").val();
+            params["orgName"] = $("#org_name").val();
+            params["tel"] = $("#tel").val();
+            params["address"] = $("#address").val();
+            params["website"] = $("#website").val();
+            params["contact"] = $("#contact").val();
+            params["introduce"] = $("#remark").val();
+            params["status"] = $("#status").val();
+            params["signBeginTime"] = $("#sign_begintime3").val();
+            params["signEndTime"] = $("#sign_endtime3").val();
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/system/saveOrUpdOrg',
+                data: params,
+                success: function (data) {
+//                    alert("操作成功!");
+                    common.mMessege('1',"操作成功");
+                    pageUrl("system/orgManage.html");
+                    $('.modal-backdrop').remove();
+                },
+                error: function (data) {
+                    debugger;
+                    common.mMessege('0', "操作失败");
+                }
+            });
+        });
+        //科室基本信息全选按钮
+        $("#baseDeptSelectOrNot").click(function(){
+            baseDeptListCheckAll();
+        });
+        function baseDeptListCheckAll(){
+            //设置全选
+            var userids = document.getElementsByName("checkedIds2");
+            baseDeptArr = new Array();
+            baseDeptNameArr = new Array();
+            //判断是否有选中项
+            var tempFlag = 0;
+            for (var i = 0; i < userids.length; i++) {
+                if (userids[i].checked == true) {
+                    tempFlag = 1;
+                    break;
+                }
+            }
+            if(tempFlag ==1){
+                //全不选
+                for (var i = 0; i < userids.length; i++) {
+                    userids[i].checked = false;
+                }
+            }else{
+                //全选
+                for (var i = 0; i < userids.length; i++) {
+                    userids[i].checked = true;;
+                    baseDeptArr.push(userids[i].value);
+                    //console.log(userids[i]);
+                    //console.log(userids[i].title);
+                    baseDeptNameArr.push(userids[i].title);
+                }
+            }
+            $("#baseDeptListValue").val(baseDeptArr.join(","));
+        }
+
+        //删除选中项
+        $("#deptDelSelect").click(function(){
+            debugger;
+            common.decide("确定要删除吗?",function(){
+                var tempStr = $("#deptListValue").val();
+                if(tempStr=="" || tempStr==null){
+                    common.mMessege('0',"选中项为空！")
+                    return;
+                }
+                var tempStr3 = $("#org_code").val();
+                var param= {};
+                param['id'] = tempStr;
+//                param['orgId'] = tempStr3;
+                $.post("/system/deleteDept",param,function(data){
+//                        alert("删除成功");
+                    common.mMessege('1',"删除成功");
+                        //清空缓存数据
+                        deptArr = new Array();
+                        baseDeptArr = new Array();
+                        $("#deptListValue").val("");
+                        changeDeptList(tempStr3);
+                });
+            });
+        });
+
+        //新的大文本形式添加科室
+        $("#deptAdd").click(function(){
+            debugger;
+            var tempStr = $("#deptText").val();
+            var tempStr3 = $("#org_code").val();
+            if(tempStr=="" || tempStr==null){
+                common.mMessege('0',"添加部门内容不能为空！");
+                return;
+            }
+//            if(tempStr3=="" || tempStr3==null){
+//                common.mMessege('0',"机构编码不能为空！");
+//                return;
+//            }
+            //去除空格
+            tempStr = tempStr.trim();
+            //中英文逗号替换
+            var tempReg=new RegExp("，","g");
+            tempStr = tempStr.replace(tempReg, ",");
+            //中英文逗号替换
+            var tempK=new RegExp(" ","g");
+            tempStr = tempStr.replace(tempK, "");
+            //将回车换行符替换成空，即不换行
+            tempStr = tempStr.replace(/[\r\n]/g,'');
+            if(tempStr=="" || tempStr==null){
+                common.mMessege('0',"添加部门内容不能为空！");
+                return;
+            }
+            //中英文分号替换
+            var tempReg4=new RegExp("；","g");
+            tempStr = tempStr.replace(tempReg4, ";");
+            //判断是否以分号结尾
+            var tempStr2 = tempStr.substring(tempStr.length-1,tempStr.length);
+            var strArray = new Array();
+            strArray=tempStr.split(";");
+            var tempInt3 = 0;
+            var param= {};
+            var errorMessage = "";
+            for (var i = 0; i < strArray.length; i++) {
+                var contents = strArray[i].split(",");
+                param['deptCode'] = contents[0];
+                param['deptName2'] = contents[1]||"";
+                if(param['deptCode'] == ""){
+                    tempInt3 = tempInt3+1;
+                }
+                if(param['deptName2'] =="" ){
+                    tempInt3 = tempInt3+1;
+                }
+                var tempStr4 = "二"+contents[0]+"熊";
+                var tempStr5 = "二"+contents[0]+"熊";
+                //科室编码和名称，内容限制为32个汉字以内
+                if(tempStr4.length>34){
+                    errorMessage = tempStr4+":::::部门编码超过32个";
+                    break;
+                }
+                if(tempStr5.length>34){
+                    errorMessage = tempStr5+":::::部门名称超过32个";
+                    break;
+                }
+
+            }
+            //根据split特性，判断是否以分号结尾，决定是否减去错误数据
+            if(tempStr2 == ";"){
+                tempInt3 = tempInt3-2;
+            }
+            if(tempInt3>0){
+                common.mMessege('0',tempInt3+"个数据格式不正确或者有空值！");
+                return;
+            }
+            if(errorMessage.length>1){
+                common.mMessege('0',errorMessage);
+                return;
+            }
+            var tempInt6 = 0;
+            var tempInt7 = 0;
+            var param2= {};
+
+            param2['id'] = tempStr3;
+            console.log(strArray.join(";").replace(" ",""));
+            param2['depts'] = strArray.join(";").replace(" ","");
+            debugger;
+            $.post("/system/saveOrUpdateDept.action",param2,function(data){
+//                    alert("新增成功");
+                common.mMessege('1',"新增成功");
+                    $("#deptText").val("");
+                    changeDeptList(tempStr3);
+            });
+
+        });
+        //添加选中项
+        $("#deptAddSelect").click(function(){
+            var tempStr = $("#baseDeptListValue").val();
+            if(tempStr=="" || tempStr==null){
+                common.mMessege('0',"选中项为空！");
+                return;
+            }
+            var tempStr3 = $("#org_code").val();
+//            if(tempStr3=="" || tempStr3==null){
+//                common.mMessege('0',"机构编码不能为空！");
+//                return;
+//            }
+            if(baseDeptArr.length<=0 || baseDeptNameArr.length<=0){
+                common.mMessege('0',"选中项为空！");
+                return;
+            }
+
+            var tempInt = 0;
+            for(var i=0;i<baseDeptArr.length;i++){
+                var param= {};
+                param['deptCode'] = baseDeptArr[i];
+                param['deptName2'] = baseDeptNameArr[i];
+                param['deptOrgCode'] = tempStr3;
+                $.post("/system/dept_saveOrUpdateDept.action",param,function(data){
+                    if(data.flag==1){
+                        tempInt=tempInt+1;
+                        changeDeptList(tempStr3);
+                    }else{
+                        common.mMessege('0',"一条数据添加失败");
+                    }
+                });
+            }
+
+            setTimeout(function(){
+                if(tempInt>0){
+                    common.mMessege('1',tempInt+"条数据添加成功！")
+                    changeDeptList(tempStr3);
+                }
+            },600)
+        });
+    })
+    var deptArr = new Array();
+    function changeDeptList(paramOrgCode){
+        debugger;
+        if(paramOrgCode == "" || paramOrgCode==null){
+            return;
+        }
+        var html = "";
+        var param= {};
+        param['orgId'] = paramOrgCode;
+        $.post("/system/selectDeptList",param,function(data){
+                var deptList = data.data;
+                for(var i=0;i<deptList.length;i++){
+                    html += '<div>';
+                    html += '<input id="label'+deptList[i].id+'" name="checkedIds" value="'+deptList[i].id+'" type="checkbox">';
+                    html += '<label for="label'+deptList[i].id+'" title="'+deptList[i].deptCode+'">'+deptList[i].deptCode+'&nbsp;&nbsp;</label>';
+                    html += '<label for="label'+deptList[i].id+'" class="checkboxLabel" title="'+deptList[i].deptName+'">'+deptList[i].deptName+'</label>';
+                    html += '</div>';
+                }
+                if(deptList.length<1){
+                    html = '没有部门信息，请添加!';
+                }
+                $("#deptList").html(html);
+
+                //科室列表
+                $('#deptList div input').click(function(){
+                    if($(this).prop("checked")==true){
+                        deptArr.push($(this).val());
+                    }else{
+                        deptArr.remove($(this).val());
+                    }
+                    $("#deptListValue").val(deptArr.join(","));
+                });
+        });
+    }
+    function deptManage(id){
+       $("#deptText").val('');
+        $('#org_code').val(id);
+        var html = "";
+        var param= {};
+        param['orgId'] = id;
+        $.get("/system/selectDeptList",param,function(data) {
+            var deptList = data.data;
+            for (var i = 0; i < deptList.length; i++) {
+                html += '<div>';
+                html += '<input id="label'+deptList[i].id+'" name="checkedIds" value="'+deptList[i].id+'" type="checkbox">';
+                html += '<label for="label'+deptList[i].id+'" title="'+deptList[i].deptCode+'">'+deptList[i].deptCode+'&nbsp;&nbsp;</label>';
+                html += '<label for="label'+deptList[i].id+'" class="checkboxLabel" title="'+deptList[i].deptName+'">'+deptList[i].deptName+'</label>';
+                html += '</div>';
+            }
+            if (deptList.length < 1) {
+                html = '没有部门信息，请添加!';
+            }
+            $("#deptList").html(html);
+            var obj = document.getElementsByName("checkedIds");
+            var len = obj.length;
+            //科室列表
+            $('#deptList div input').click(function () {
+                if ($(this).prop("checked") == true) {
+                    deptArr.push($(this).val());
+                } else {
+                    deptArr.remove($(this).val());
+                }
+                $("#deptListValue").val(deptArr.join(","));
+            });
+            $("#deptLayer h4").html("部门管理");
+            $("#deptLayer").modal('show');
+        });
+    }
+    function edit(id){
+        $("#hospitalLayer h4").html("编辑机构信息");
+        $("#hospitalLayer").modal('show');
+        $.get("/system/getOrgById?id=" + id, function (result) {
+            var data = result.data;
+            $("#id").val(data.id);
+//            $("#org_code").val(data.orgCode);
+            $("#org_level").val(data.orgCode);
+            $('#dropmenuOrg').html('' + data.orgLevel + '<span style="float: right; margin-top: 7px;" class="caret"></span>');
+            $('#org_level').val(data.orgLevel);
+            $("#org_name").val(data.orgName);
+            $("#tel").val(data.tel);
+            $("#address").val(data.address);
+            $("#website").val(data.website);
+            $("#contact").val(data.contact);
+            $("#remark").val(data.introduce);
+            if(data.status == 1){
+                $('#dropmenuDept').html('有效<span style="float: right; margin-top: 7px;" class="caret"></span>');
+            }
+            if(data.status == 0){
+                $('#dropmenuDept').html('无效<span style="float: right; margin-top: 7px;" class="caret"></span>');
+            }
+            $('#status').val(data.status);
+            $("#sign_begintime3").val(data.signBeginTime);
+            $("#sign_endtime3").val(data.signEndTime);
+        });
+    }
+    function del(id){
+        common.decide("确定要删除吗?", function () {
+            debugger;
+            var param = {};
+            param["id"] = id;
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '/system/deleteOrg',
+                data: param,
+                success: function (data) {
+//                    alert("删除成功");
+                    common.mMessege('1',"删除成功！");
+                    pageUrl("system/orgManage.html");
+                },
+                error: function (data) {
+                    debugger;
+                    common.mMessege('0', "删除失败");
+                }
+            });
+        });
+    }
+    function initTable(params){
+        $("#table").bootstrapTable("destroy");
+        $.get("/system/findOrgList",params, function (result) {
+            debugger;
+            if (result.code=='1') {
+                var data = {total: result.Total, rows: result.Rows};
+                $('#table').bootstrapTable({
+                    data: data.rows,
+                    dataType: "json",
+                    columns: [
+                        {
+                            title: '序号',
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (value, row, index) {
+                                return index+1;
+                            }
+                        },
+                        {
+                            title: '机构名称',
+                            field: 'orgName',
+                            align: 'center',
+                            valign: 'middle',
+                        },
+                        {
+                            title: '联系人',
+                            field: 'contact',
+                            align: 'center'
+                        },
+                        {
+                            title: '联系电话',
+                            field: 'tel',
+                            align: 'center'
+                        },
+                        {
+                            title: '地址',
+                            field: 'address',
+                            align: 'center'
+                        },
+                        {
+                            title: '网址',
+                            field: 'website',
+                            align: 'center'
+                        },
+                        {
+                            title: '入驻时间',
+                            field: 'joinTime',
+                            align: 'center'
+                        },
+                        {
+                            title: '签约开始时间',
+                            field: 'signBeginTime',
+                            align: 'center'
+                        },
+                        {
+                            title: '签约结束时间',
+                            field: 'signEndTime',
+                            align: 'center'
+                        },
+                        {
+                            title: '状态',
+                            field: 'status',
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                if(value == '1'){
+                                    return "有效";
+                                }
+                                if(value == '0'){
+                                    return "无效";
+                                }
+                            }
+                        },
+                        {
+                            title: '机构介绍',
+                            field: 'introduce',
+                            align: 'center',
+                        },
+                        {
+                            title: '操作',
+                            field: 'id',
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                var e = '<a href="#" mce_href="#" onclick="edit(\'' + row.id + '\')">编辑</a> ';
+                                var d = '<a href="#" mce_href="#" onclick="del(\'' + row.id + '\')">删除</a> ';
+                                var f = '<a href="#" mce_href="#" onclick="deptManage(\'' + row.id + '\')">部门管理</a> ';
+                                return e + d + f;
+                            }
+                        }
+                    ]
+                });
+            }
+        });
+    }
+</script>
+<style type="text/css">
+    #hospitalLayer  td {
+        border: 0px solid rgb(211,217,223) !important;
+    }
+    .form-control{
+        margin-top: 10px;
+    }
+</style>

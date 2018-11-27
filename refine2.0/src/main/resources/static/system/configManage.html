@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title</title>
+    <script type="text/javascript" src="../js/common/common.js"></script>
+    <style type="text/css" href="/common/system.css"></style>
+</head>
+<style type="text/css">
+    .modal-dialog{
+        width:800px;margin: 20px auto;
+    }
+    .modal-dialog.small-dialog{
+        width:600px;
+    }
+    .bootstrap-table {
+        padding-top: 20px;
+        padding-left: 20px;
+        width: 99%;
+    }
+    .addHosBtn {
+        float: left;
+        margin-left: 20px;
+        height: 38px;
+    }
+    h4 {
+        margin: auto;
+        padding-top: 10px;
+        padding-left: 30px;
+        font-size: 15px;
+    }
+    .qxcontP span {
+        width: 230px;
+        display: block;
+        float: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 10px;
+        margin-right: 15px;
+    }
+    .form-group {
+        margin-top: 5px;
+        margin-bottom: 0px;!important;
+    }
+    .topBar{
+        border: 1px solid rgb(238,243,248);
+        background: rgb(248,250,252);
+        width: 97.5%;
+        margin-top: 20px;
+        height: 40px;
+        margin-left: 20px;
+    }
+    .searchBtn{
+        float: left;
+        width: 97.5%;
+        margin-top: 20px;
+        height: 40px;
+        margin-left: 20px;
+    }
+    span.pull-left {
+        margin-right: 10px;
+        padding-top: 7px;
+    }
+    #add {
+        background-image: url(images/新增.png);
+        background-repeat: no-repeat;
+        background-position: 12px 10px;
+        background-size: 16px;
+    }
+</style>
+<body>
+<div class="topBar">
+</div>
+<table id="table"></table>
+<!-- 列表新增 -->
+</body>
+</html>
+<script type="application/javascript">
+    $(function(){
+        init();
+    })
+    function init(params){
+        $("#table").bootstrapTable("destroy");
+        $.get("/system/selectConfigList",params, function (result) {
+            debugger;
+                var data = result.data;
+                $('#table').bootstrapTable({
+                    data: data,
+                    dataType: "json",
+                    columns: [
+                        {
+                            title: '配置名称',
+                            field: 'name',
+                            align: 'center',
+                            valign: 'middle',
+                        },
+                        {
+                            title: '配置属性',
+                            field: 'keyer',
+                            align: 'center',
+                            valign: 'middle',
+                        },
+                        {
+                            title: '描述',
+                            field: 'remark',
+                            align: 'left',
+                            formatter:function(value){
+                                return  "<div style='width:500px;'>"+value+"</div>";
+                            }
+                        },
+                        {
+                            title: '配置值',
+                            field: 'val',
+                            align: 'center',
+                            editable:true
+                        }
+                    ],
+                    onEditableSave: function (field, row) {
+                        debugger;
+                        $.ajax({
+                            type: "post",
+                            url: "/system/updateConfig",
+                            data: row,
+                            dataType: 'JSON',
+                            success: function (data, status) {
+                                if (status == "success") {
+                                    common.mMessege('1',"编辑数据成功！");
+                                }
+                            },
+                            error: function () {
+                                common.mMessege('1',"编辑失败！");
+                            },
+                            complete: function () {
+
+                            }
+
+                        });
+                    }
+                });
+        });
+    }
+
+</script>
+<style type="text/css">
+    #adduserLayer  td {
+        border: 0px solid rgb(211,217,223) !important;
+    }
+    .form-control{
+        margin-top: 10px;
+    }
+</style>

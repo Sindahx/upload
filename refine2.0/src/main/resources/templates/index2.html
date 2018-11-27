@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>采集监控管理系统</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+  <!-- Bootstrap 3.3.7 -->
+  <link th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet"/>
+
+  <link th:href="@{/bootstrap3-editable/css/bootstrap-editable.css}" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link th:href="@{/bower_components/font-awesome/css/font-awesome.min.css}" rel="stylesheet"/>
+  <!-- Ionicons -->
+  <link th:href="@{/bower_components/Ionicons/css/ionicons.min.css}" rel="stylesheet" />
+  <!-- Theme style -->
+  <link th:href="@{/dist/css/AdminLTE.min.css}" rel="stylesheet" />
+  <link th:href="@{/dist/css/skins/_all-skins.min.css}" rel="stylesheet" />
+  <script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+  <script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+  <script th:src="@{/bootstrap3-editable/js/bootstrap-editable.js}"></script>
+  <script th:src="@{/js/bootstrap-table.js}"></script>
+  <script th:src="@{/js/bootstrap-table-editable.js}"></script>
+  <script th:src="@{/dist/js/adminlte.min.js}"></script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <span class="logo-mini">采集</span>
+      <span class="logo-lg">采集监管系统</span>
+    </a>
+    <nav class="navbar navbar-static-top">
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img th:src="@{/dist/img/user2-160x160.jpg}" class="user-image" alt="User Image"/>
+              <span class="hidden-xs">Alexander Pierce</span>
+            </a>
+          </li>
+          <!--<li>-->
+            <!--<a href="#" ><i class="fa fa-gears"></i></a>-->
+          <!--</li>-->
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <aside class="main-sidebar">
+    <section class="sidebar">
+      <ul class="sidebar-menu" data-widget="tree">
+        <li><a id="init" href="javascript:;" onclick="pageUrl('homePage1.html')"><i class="fa fa-book"></i> <span>首页</span></a></li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span>库存管理</span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="javascript:;" onclick="pageUrl('/stock/stockCheck.html')"><i class="fa fa-circle-o"></i> 库存查询</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/stock/stockOutAndIn.html')"><i class="fa fa-circle-o"></i> 出入库明细</a></li>
+          </ul>
+        </li>
+        <li><a href="javascript:;" onclick="pageUrl('/buyPrice/buyPrice.html')"><i class="fa fa-book"></i> <span>采购管理</span></a></li>
+        <li><a href="javascript:;" onclick="pageUrl('/process/process.html')"><i class="fa fa-book"></i> <span>加工管理</span></a></li>
+        <li><a href="javascript:;" onclick="pageUrl('/order/orderManage.html')"><i class="fa fa-book"></i> <span>订单管理</span></a></li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span>报表查询</span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="javascript:;" onclick="pageUrl('/roleManage.html')"><i class="fa fa-circle-o"></i> 平衡表</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/userManage.html')"><i class="fa fa-circle-o"></i> 对账单</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span>基础数据</span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="javascript:;" onclick="pageUrl('/basic/supplierManage.html')"><i class="fa fa-circle-o"></i> 供应商管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/basic/DistributionManage.html')"><i class="fa fa-circle-o"></i> 配送单位管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/basic/GoodsManage.html')"><i class="fa fa-circle-o"></i> 品名信息管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/basic/GoodsTypeManage.html')"><i class="fa fa-circle-o"></i> 品名类别管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/basic/warehouseManage.html')"><i class="fa fa-circle-o"></i> 仓库管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/basic/BuyPriceManage.html')"><i class="fa fa-circle-o"></i> 采购价格管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/basic/SalesPriceManage.html')"><i class="fa fa-circle-o"></i> 销售价格管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/basic/PriceVersionManage.html')"><i class="fa fa-circle-o"></i> 价格版本管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/basic/ProcessMethodManage.html')"><i class="fa fa-circle-o"></i> 加工方法管理</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span>系统管理</span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="javascript:;" onclick="pageUrl('/system/orgManage.html')"><i class="fa fa-circle-o"></i> 机构管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/system/userManage.html')"><i class="fa fa-circle-o"></i> 用户管理</a></li>
+            <li><a href="javascript:;" onclick="pageUrl('/system/roleManage.html')"><i class="fa fa-circle-o"></i> 角色管理</a></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+  </div>
+</div>
+
+</body>
+</html>

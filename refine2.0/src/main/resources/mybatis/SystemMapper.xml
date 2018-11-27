@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.refine.mapper.SystemMapper">
+
+	<select id="getUserInfo" resultType="cn.refine.model.User" parameterType="cn.refine.model.User">
+		SELECT
+			u.fid AS id,
+			u. NAME,
+			u.sex,
+			u.mobile,
+			u.deptCode,
+			u.loginName,
+			u.loginPwd,
+			u.org_code AS orgCode,
+			u. STATUS,
+			u.remark,
+		u.type,
+			o.org_name AS orgName,
+			d.dept_name AS deptName
+		FROM
+			tbl_user u
+		LEFT JOIN tbl_organization o ON o.fid = u.org_code
+		LEFT JOIN tbl_dept d ON d.fid = u.deptCode
+		WHERE 1=1
+		<if test="vo.loginName != null and vo.loginName != ''">
+			AND u.loginName = #{vo.loginName}
+		</if>
+		<if test="vo.loginPwd != null and vo.loginPwd != ''">
+			AND u.loginPwd = #{vo.loginPwd};
+		</if>
+	</select>
+
+	<select id="findUserList" resultType="hashMap">
+		select
+		u.fid id,u.name,u.sex,u.loginname as loginName,d.DEPT_NAME deptName,u.mobile,u.status,
+		u.remark
+		from tbl_user u
+		LEFT join tbl_dept d on d.fid = u.DEPTCODE
+		LEFT JOIN tbl_organization o ON o.fid = d.orgId
+		where u.status = 1
+		<if test="vo.name != null and vo.name != ''">
+			AND u.name = #{vo.name}
+		</if>
+		<if test="vo.deptCode != null and vo.deptCode != ''">
+			AND d.fid = #{vo.deptCode}
+		</if>
+		<if test="vo.orgCode != null and vo.orgCode != ''">
+			AND o.fid = #{vo.orgCode}
+		</if>
+	</select>
+
+
+	<select id="findRoleList" resultType="hashMap">
+		select
+		r.fid id,r.roleName,r.description,r.status ,
+		r.org_code
+		from tbl_role r
+		where r.status = 1
+	</select>
+
+	<select id="findOrgList" resultType="hashMap">
+		select distinct
+		o.fid id,o.org_name orgName,o.contact,o.status,
+		o.address,o.tel,o.website,o.jointime joinTime,o.sign_begintime signBeginTime,
+		o.sign_endtime signEndTime,o.introduce
+		from tbl_organization o
+		LEFT JOIN  tbl_dept d on o.fid = d.orgId
+		where 1=1 AND o.status = 1
+		<if test="vo.status != null and vo.status != ''">
+			AND o.status = #{vo.status}
+		</if>
+		<if test="vo.orgCode != null and vo.orgCode != ''">
+			AND o.fid = #{vo.orgCode}
+		</if>
+		<if test="vo.deptCode != null and vo.deptCode != ''">
+			AND d.fid = #{vo.deptCode}
+		</if>
+		<if test="vo.contact != null and vo.contact != ''">
+			AND o.contact = #{vo.contact}
+		</if>
+	</select>
+	<insert id="addUser" parameterType="cn.refine.model.User" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tbl_user(NAME,SEX,MOBILE,DEPTCODE,LOGINNAME,LOGINPWD,ORG_CODE,STATUS,REMARK,TYPE)
+		VALUE(#{name},#{sex},#{mobile},#{deptCode},#{loginName},#{loginPwd},#{orgCode},#{status},#{remark},#{type})
+	</insert>
+
+	<update id="updUser" parameterType="cn.refine.model.User">
+		update
+		tbl_user set NAME = #{name},SEX = #{sex},MOBILE = #{mobile},DEPTCODE = #{deptCode},LOGINNAME = #{loginName},ORG_CODE = #{orgCode},status = #{status},remark = #{remark},type = #{type}
+		WHERE fid = #{id};
+	</update>
+	<update id="updateUserInfo" parameterType="cn.refine.model.User">
+		update
+		tbl_user set NAME = #{name},SEX = #{sex},MOBILE = #{mobile},LOGINNAME = #{loginName},remark = #{remark}
+		WHERE fid = #{id};
+	</update>
+	<insert id="addUserRole" parameterType="cn.refine.model.UserRole">
+		insert into
+		tbl_user_role(USER_ID,ROLE_ID)
+		VALUE(#{userId},#{roleId})
+	</insert>
+
+	<insert id="addRoleAuth" parameterType="cn.refine.model.SystemRoleAuth">
+		insert into
+		tbl_role_authority(ROLE_ID,AUTHORITY_ID)
+		VALUE(#{roleId},#{authId})
+	</insert>
+
+	<delete id="deleteRoleAuthByRoleId" parameterType="cn.refine.model.SystemRoleAuth">
+		delete from
+		tbl_role_authority
+		WHERE  ROLE_ID = #{roleId};
+	</delete>
+
+	<insert id="addRole" parameterType="cn.refine.model.Role" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tbl_role(rolename,description,status,org_code)
+		VALUE(#{roleName},#{description},#{status},#{orgCode})
+	</insert>
+	<insert id="insertLog" parameterType="cn.refine.model.LogVO" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		tbl_oper_log(userName,loginName,orgName,operFunc,operId,operTime,operIp)
+		VALUE(#{userName},#{loginName},#{orgName},#{operFunc},#{operId},#{operTime},#{operIp})
+	</insert>
+
+
+	<insert id="addDept" parameterType="cn.refine.model.Dept">
+		insert into
+		tbl_dept(dept_name,status,orgid,dept_Code)
+		VALUE(#{deptName},1,#{orgId},#{deptCode})
+	</insert>
+
+	<select id="selectDeptList" resultType="hashMap" parameterType="cn.refine.model.Dept">
+		select fid as id,
+		dept_name as deptName,status,orgId,dept_Code as deptCode
+		from
+		tbl_dept
+		WHERE  orgId = #{orgId};
+	</select>
+	<select id="findLogList" resultType="hashMap">
+		select fid as id,
+		userName,loginName,orgName,operFunc,operId,operTime,operIp
+		from
+		tbl_oper_log
+		order by operTime DESC
+	</select>
+
+
+	<update id="updRole" parameterType="cn.refine.model.Role">
+		update
+		tbl_role set roleName = #{roleName},description = #{description},status = #{status}
+		WHERE  fid = #{id};
+	</update>
+
+	<insert id="addOrg" parameterType="cn.refine.model.Organization">
+		insert into
+		tbl_organization(ORG_NAME,STATUS,CONTACT,ADDRESS,TEL,INTRODUCE,JOINTIME,SIGN_BEGINTIME,SIGN_ENDTIME,WEBSITE,REMARK,ORG_LEVEL)
+		VALUE(#{orgName},#{status},#{contact},#{address},#{tel},#{introduce},now(),#{signBeginTime},#{signEndTime},#{website},#{remark},#{orgLevel})
+	</insert>
+
+	<update id="updOrg" parameterType="cn.refine.model.Organization">
+		update
+		tbl_organization set ORG_NAME = #{orgName},STATUS = #{status},CONTACT = #{contact},ADDRESS = #{address},TEL = #{tel},INTRODUCE = #{introduce},SIGN_BEGINTIME = #{signBeginTime},SIGN_ENDTIME = #{signEndTime},WEBSITE = #{website},REMARK = #{remark},ORG_LEVEL=#{orgLevel}
+		WHERE status=1 AND fid = #{id};
+</update>
+
+	<select id="getOrgById" resultType="cn.refine.model.Organization" parameterType="cn.refine.model.Organization">
+		select
+		fid as id,org_name as orgName,status,contact,address,tel,introduce,joinTime,sign_begintime as signBeginTime,sign_endtime as signEndTime,website,remark,ORG_LEVEL as orgLevel
+		from tbl_organization
+		WHERE status=1 AND fid = #{id};
+	</select>
+
+	<select id="getUserById" resultType="cn.refine.model.User" parameterType="cn.refine.model.User">
+		select
+			u.fid as id,u.name,u.sex,u.mobile,u.deptCode,u.loginName,u.loginPwd,u.org_code as orgCode,u.status,u.remark,
+			o.org_name as orgName,d.dept_name as deptName
+		from tbl_user u
+		LEFT JOIN tbl_organization o on o.fid = u.org_code
+			LEFT JOIN tbl_dept d on d.fid = u.deptCode
+		WHERE u.fid = #{id};
+	</select>
+
+	<select id="getRoleById" resultType="cn.refine.model.Role" parameterType="cn.refine.model.Role">
+		select fid as id,
+		roleName,description,status,org_code as orgCode
+		from
+		tbl_role
+		WHERE  fid = #{id};
+	</select>
+
+	<select id="getUserRoleByUserId" resultType="hashMap" parameterType="cn.refine.model.UserRole">
+		SELECT
+		tur.fid AS id,
+		tur.USER_ID AS userId,
+		tur.ROLE_ID AS roleId,
+		ta.PATH path
+		FROM
+		tbl_user_role tur
+		LEFT JOIN tbl_role_authority tra ON tur.ROLE_ID = tra.ROLE_ID
+		LEFT JOIN tbl_authority ta ON tra.AUTHORITY_ID = ta.FID
+		WHERE
+		tur.USER_ID = #{userId};
+	</select>
+	<select id="getUserRoleByUserId1" resultType="hashMap" parameterType="cn.refine.model.UserRole">
+		SELECT
+		tur.fid AS id,
+		tur.USER_ID AS userId,
+		tur.ROLE_ID AS roleId,
+		 tr.ROLENAME AS roleName,
+		ta.PATH path
+		FROM
+		tbl_user_role tur
+		LEFT JOIN tbl_role_authority tra ON tur.ROLE_ID = tra.ROLE_ID
+		LEFT JOIN tbl_authority ta ON tra.AUTHORITY_ID = ta.FID
+		LEFT JOIN tbl_role tr on tr.FID = tur.ROLE_ID
+		WHERE
+		tur.USER_ID = #{userId};
+	</select>
+
+	<select id="getRoleAuthByRoleId" resultType="hashMap" parameterType="cn.refine.model.SystemRoleAuth">
+		select
+	    ROLE_ID as roleId,authority_id as authId
+		from
+		tbl_role_authority
+		WHERE  ROLE_ID = #{roleId};
+	</select>
+
+	<delete id="deleteUserRoleByUserId" parameterType="cn.refine.model.UserRole">
+		delete from
+		tbl_user_role
+		WHERE  USER_ID = #{userId};
+	</delete>
+
+	<delete id="deleteDept" parameterType="cn.refine.model.Dept">
+		delete from
+		tbl_dept
+		WHERE  fid = #{id};
+	</delete>
+	<select id="getAllAuth" resultType="hashMap">
+		select fid id, name AS authName, path, status, needlog,pid,type,levels,a.show,menuType from tbl_authority a  where 1=1
+		<if test="id != null and id != ''">
+			 AND fid in( SELECT distinct(authority_id) from tbl_role_authority where role_id in( select role_id from tbl_user_role where user_id = #{id}))
+		</if>
+		<if test="show != null and show != ''">
+			 AND a.show = #{show}
+		</if>
+		AND status = 1 and proType = 2
+		<if test="type != null and type != ''">
+			 AND type = 1
+		</if>
+		ORDER by fid asc
+	</select>
+	<select id="selectConfigList" resultType="hashMap"  parameterType="cn.refine.model.SysDefaultVO">
+		SELECT name,type,keyer,val,remark FROM tbl_database WHERE 1=1
+	</select>
+	<update id="updateConfig" parameterType="cn.refine.model.SysDefaultVO">
+		update tbl_database set val = #{val} where keyer = #{keyer};
+	</update>
+
+	<update id="deleteRole" parameterType="cn.refine.model.Role">
+		update tbl_role set status = 0 where fid = #{id};
+	</update>
+
+	<update id="deleteOrg" parameterType="cn.refine.model.Organization">
+		update tbl_organization set status = 0 where fid = #{id};
+	</update>
+	<update id="deleteUser" parameterType="cn.refine.model.User">
+		update tbl_user set status = 0 where fid = #{id};
+	</update>
+	<update id="resetPwd" parameterType="cn.refine.model.User">
+		update tbl_user set LOGINPWD = #{loginPwd} where fid = #{id};
+	</update>
+</mapper>
