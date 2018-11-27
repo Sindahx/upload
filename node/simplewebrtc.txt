@@ -1,0 +1,23 @@
+simplewebrtc
+
+
+windows 启动：
+
+config 目录下新建文件夹 sslcerts
+
+配置证书：
+openssl genrsa -out ./config/sslcerts/key.pem 1024
+openssl req -new -key ./config/sslcerts/key.pem -out ./config/sslcerts/csr.pem
+openssl x509 -req -days 9999 -in ./config/sslcerts/csr.pem -signkey ./config/sslcerts/key.pem -out ./config/sslcerts/cert.pem
+
+配置文件：
+development.json
+ "secure": true,
+ "key": "config/sslcerts/key.pem",
+ "cert": "config/sslcerts/cert.pem",
+
+启动：
+node server.js
+
+node https 启动------不支持windows
+NODE_ENV=production node server.js

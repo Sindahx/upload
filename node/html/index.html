@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<!-- <link rel="stylesheet" type="text/css" href="all.css"> -->
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="js/latest-v2.js"></script>
+    <script src="js/jquery.slimscroll.min.js"></script>
+    <script src="js/simplewebrtc-with-adapter.bundle.js"></script>
+    
+    <style type="text/css">
+    	
+    	.video_center{
+        	width: 586px;
+        	height: auto;
+        	position: absolute;
+        	top: 10px;
+        	right: 0px;
+        	z-index: 998;
+        	background: #002233;
+        }
+
+
+    
+		.controller{
+			width: 100%;
+			height: 47px;
+			margin: 0 auto;
+			position: absolute;
+        	bottom: 0px;
+			z-index: 999;
+			background-color: #000000ab;
+
+		}
+    	.controller div{
+    		height: 100%;
+    		text-align: center;
+    		margin: 0px;
+    		line-height: 63px;
+    	}
+
+    	.controller div img{
+    		height: 60%;
+    		/*padding: 2px;*/
+    	}
+
+    	.controller div img:hover{
+    		cursor:pointer;
+    	}
+
+    	.center{
+    		width: 900px;
+    		margin: 0 auto;
+    	}
+    	  #remoteVideos video {
+            /*height: 350px;*/
+            width: 100%;
+            background-color: #00000047;
+
+        }
+
+         #remoteVideos{
+         	height: 100%;
+         	/*overflow:auto;*/
+             /*border:1px solid #000000;"*/
+         }
+ 
+        .center video {
+            /*height: 350px;*/
+            width: 100%;
+        }
+        .remote{
+        	width: 200px;
+        	height: 100%;
+        	position: absolute;
+        	top: 0px;
+        	right: 0px;
+        	/*z-index: 999;
+        	background: #002233;*/
+        	float: right;
+        	z-index: 999;
+        }
+        .message{
+        	width: 300px;
+        	height: auto;
+        	position: absolute;
+        	top: 10px;
+        	left: 0px;
+        	z-index: 999;
+        	background: #ffffff;
+        }
+        .message ul{
+        	widows: 100%;
+        	height: 500px;
+        	padding: 10px;
+        	margin:0 auto;
+        }
+        .message ul li{
+        	list-style:none
+        }
+
+        #text{
+        	margin-left: 10px;
+        	margin-right: 10px;
+        	width: 90%;
+        }
+
+        #send{
+        	width: 90%;
+        	margin-left: 10px;
+        	margin-right: 10px;
+        	margin-bottom: 10px;
+        	height: 40px;
+        	font-size: 22px;
+        	background-color: green;
+        }
+
+        .power{
+        	float: left;
+        	margin: 10px;
+        }
+        .trun_left{
+        	float: right;
+        	margin: 10px;
+        }
+        .fangda{
+        	float: right;
+        	margin: 10px;
+        }
+        #localVideo{
+        	transform: scaleX(1)
+        }
+
+         .videoContainer {
+                position: relative;
+                width: 200px;
+                height: 150px;
+            }
+            .videoContainer video {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+            .volume_bar {
+                position: absolute;
+                width: 5px;
+                height: 0px;
+                right: 0px;
+                bottom: 0px;
+                background-color: #12acef;
+            }
+           video{
+           		poster:"/images/31231312.bmp"
+           }
+    </style>
+
+
+   
+</head>
+<body>
+    
+ 
+    	
+    <div class="video_center">
+	    <div class="remote">
+	    	<div id="remoteVideos">
+	    		
+	    	</div>
+	    </div>
+	    <div class="local" id="local">
+	    	<video id="localVideo"></video>
+	    	<!-- <div id="localVolume" class="volume_bar"></div> -->
+	    </div>
+	    <div class="controller">
+	    	<div>
+	    		<!-- <input class="closevoice" type="button" name="" value="关闭声音" />
+			    <input class="closevideo" type="button" name="" value="关闭视频" /> -->
+			    <img class="power" turn_on="0" src="image/电源.png">
+			    <img class="closevoice" turn_on="0" src="image/麦克风.png">
+			    <img class="call" turn_on="0" src="image/拨号.png">
+			    <img class="closevideo" turn_on="0" src="image/摄像头.png">
+			    <!-- <img class="fangda" turn_on="0" src="image/放大.png"> -->
+			    <img class="trun_left" turn_on="0" src="image/向右.png">
+	    	</div>
+	    </div>
+	</div>
+
+</body>
+</html>
+
+<script>
+
+		$(".video_center").hover(function(){
+			$(".controller").fadeIn("slow");
+
+		},function(){
+			$(".controller").fadeOut("slow");
+		});
+    	
+		 $("#remoteVideos").slimScroll({
+	        height: '100%',
+	        alwaysVisible: false,
+	    });
+
+    	var videoMap = {};
+    	var peerMap = {};
+    	var carrentId = "";
+ 		var isLocal = false;
+ 		var sessionId_ = "";
+        var webrtc = new SimpleWebRTC({
+            // the id/element dom element that will hold "our" video
+            localVideoEl: 'localVideo',
+            // the id/element dom element that will hold remote videos
+            remoteVideosEl: '',
+            // immediately ask for camera access
+            autoRequestMedia: true,
+            url:'https://192.168.1.182:8888',
+            media: {
+	            audio: true,
+	            video: true
+        	},
+            nick: 'wuhan'
+        });
+ 
+
+		
+        // we have to wait until it's ready
+        webrtc.on('readyToCall', function (sessionId) {
+            // you can name it anything
+            webrtc.joinRoom('room2');
+   
+ 		});
+
+
+
+
+ 		$('.power').click(function() {
+ 
+ 		});
+            // Send a chat message
+            $('#send').click(function () {
+                var msg = $('#text').val();
+                webrtc.sendToAll('chat', { message: msg, nick: webrtc.config.nick });
+                // $('#messages').append('<br>You:<br>' + msg + '\n');
+                $(".message ul").append('<li>You:'+ msg+'</li>')
+                $('#text').val('');
+            });
+
+            $('.closevoice').click(function() {
+        	/* Act on the event */
+        		var turn_on = $(this).attr('turn_on');
+        		if (turn_on == "0") {
+        			webrtc.mute();
+        			$(this).attr("turn_on","1");
+        			$(this).attr("src","image/麦克风-静音.png");
+        		}else{
+        			webrtc.unmute();
+        			$(this).attr("turn_on","0");
+        			$(this).attr("src","image/麦克风.png");
+        		}
+	        });
+	       
+	        $('.closevideo').click(function() {
+        	
+        		var turn_on = $(this).attr('turn_on');
+        		if (turn_on == "0") {
+        			webrtc.pauseVideo();
+        			$(this).attr("turn_on","1");
+        			$(this).attr("src","image/摄像头_red.png");
+        		}else{
+        			webrtc.resumeVideo();
+        			$(this).attr("turn_on","0");
+        			$(this).attr("src","image/摄像头.png");
+        		}
+	        });
+
+	        $('.call').click(function() {
+        	
+        		var turn_on = $(this).attr('turn_on');
+        		if (turn_on == "0") {
+        			webrtc.pause();
+        			$(this).attr("turn_on","1");
+        			$(this).attr("src","image/拨号_red.png");
+        		}else{
+        			webrtc.resume();
+        			$(this).attr("turn_on","0");
+        			$(this).attr("src","image/拨号.png");
+        		}
+	        });
+
+	        $('.trun_left').click(function() {
+        	
+        		var turn_on = $(this).attr('turn_on');
+        		if (turn_on == "0") {
+        			// webrtc.pause();
+        			$(".remote").hide(1000);
+        			$(this).attr("turn_on","1");
+        			$(this).attr("src","image/向左.png");
+        		}else{
+        			// webrtc.resume();
+        			$(".remote").show(1000);
+        			$(this).attr("turn_on","0");
+        			$(this).attr("src","image/向右.png");
+        		}
+	        });
+
+	        $('.fangda').click(function() {
+        	
+        		var turn_on = $(this).attr('turn_on');
+        		if (turn_on == "0") {
+        			// webrtc.pause();
+        			// $(".remote").hide();
+        			$(".video_center").css("width","100%");    
+        			$(this).attr("turn_on","1");
+        			$(this).attr("src","image/缩小.png");
+        		}else{
+        			// webrtc.resume();
+        			// $(".remote").show();
+        			$(this).attr("turn_on","0");
+        			$(this).attr("src","image/放大.png");
+        		}
+	        });
+        
+        webrtc.on('stunservers', function(obj,obj2) {
+        	debugger;
+        	console.log();
+        });
+
+        webrtc.on('turnservers', function(obj,obj2) {
+        	debugger;
+        	console.log();
+        });
+
+        webrtc.on('videoAdded', function (video, peer) {
+
+			videoMap[webrtc.getDomId(peer)] = video;
+			peerMap[webrtc.getDomId(peer)] = peer;
+		    console.log('video added', peer);
+		    var remotes = document.getElementById('remoteVideos');
+		    
+		    if (remotes) {
+		        var container = document.createElement('div');
+		        container.className = 'videoContainer';
+		        container.id = 'container_' + webrtc.getDomId(peer);
+		        container.appendChild(video);
+
+		        remotes.appendChild(video);
+
+		        
+
+		    }
+		});
+
+
+		// a peer video was removed
+		webrtc.on('videoRemoved', function (video, peer) {
+
+			if(carrentId == webrtc.getDomId(peer)){
+				$('#localVideo').show();
+			}
+
+		    console.log('video removed ', peer);
+
+		    delete videoMap[webrtc.getDomId(peer)]
+		    var remotes = document.getElementById('remoteVideos');
+		    $('#'+webrtc.getDomId(peer)).remove();
+		   
+		});
+
+        webrtc.on('channelMessage', function (peer, label, data) {
+                if (data.type == 'volume') {
+                    showVolume(document.getElementById('volume_' + peer.id), data.volume);
+                }
+            });
+		// local volume has changed
+		webrtc.on('volumeChange', function (volume, treshold) {
+		    showVolume(document.getElementById('localVolume'), volume);
+		});
+		// remote volume has changed
+		webrtc.on('remoteVolumeChange', function (peer, volume) {
+		    showVolume(document.getElementById('volume_' + peer.id), volume);
+		});
+
+        
+ 
+        //For Text Chat ------------------------------------------------------------------
+        // Await messages from others
+        webrtc.connection.on('message', function (data) {
+            if (data.type === 'chat') {
+                console.log('chat received', data);
+                $(".message ul").append('<li>'+data.payload.nick + ':' + data.payload.message+'</li>')
+            }
+        });
+
+        
+ }
+
+
+        
+</script>
