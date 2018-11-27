@@ -1,0 +1,3 @@
+[2018-04-02 10:31:52] START
+[2018-04-02 10:33:33] CREATE mysql_test.py: 0
+[2018-04-02 10:34:20] DELETE hello/models/mysql_test.py: 0

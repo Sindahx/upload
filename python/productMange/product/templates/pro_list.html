@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<div class="search">
+				商品类别:<input id="productName" type="text" name="productName" value="{{ productName }}"/>
+				后台类目:<input id="productCat" type="text" name="cat" value="{{ productCat }}"/>
+    <button id="serch_button" onclick="serch()">搜索</button>
+    <button id="save_button" onclick="save()">保存</button>
+</div>
+{% for athlete_list in list %}
+    {% if athlete_list.checked == 'checked' %}
+        <div class="descript_checked">
+{#        <div class="checkbox"></div>#}
+    {% else %}
+        <div class="descript">
+        <div class="checkbox"><input type="checkbox" name="product" value="{{ athlete_list }}"></div>
+    {% endif %}
+
+
+                    <div class="descript_img">
+                        <img src="{{athlete_list.pict_url}}">
+                    </div>
+                    <div class="descript_des">
+                        <p title="{{ athlete_list.title }}">{{ athlete_list.title }}</p>
+                        <p>价格：{{ athlete_list.zk_final_price }}</p>
+                        <p>佣金：{{ athlete_list.commission_rate }}</p>
+                        <p>优惠券：{{athlete_list.coupon_info}}</p>
+{#                        <p>已经被选择的：{{athlete_list.checked}}</p>#}
+                        <p><a href="{{ athlete_list.item_url }}" target="_blank">详情</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="{{ athlete_list.coupon_click_url }}">优惠券</a></p>
+                    </div>
+                </div>
+
+{% endfor %}
+
+</body>
+</html>
+<script>
+
+    {#$('#serch_button').off('click');#}
+
+    </script>

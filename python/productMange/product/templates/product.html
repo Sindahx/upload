@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>商品管理系统</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<style type="text/css">
+		
+		.center{
+			width: 100%;
+			height: 680px;
+		}
+
+		.head{
+			background-color: green;
+			height:100px;
+			width: 100%;
+		}
+
+		.left{
+			width: 10%;
+			height: 100%;
+			/*background-color: red;*/
+			float: left;
+			/*border: 1px solid #999999;*/
+		}
+		.main{
+			width: 88%;
+			height: 100%;
+			/*background-color: blue;*/
+			float: left;
+			padding: 10px;
+			border: 1px solid #999999;
+		}
+
+		.descript{
+			float: left;
+			width: 250px;
+			height: 300px;
+			/*background-color: black;*/
+			margin-right: 10px;
+			margin-bottom: 10px;
+			border: 1px solid #999999;
+		}
+
+        .descript_checked{
+			float: left;
+			width: 250px;
+			height: 300px;
+			/*background-color: black;*/
+			margin-right: 10px;
+			margin-bottom: 10px;
+			border: 1px solid #999999;
+            background-color: #99999999;
+		}
+
+        .descript:hover{
+            cursor:pointer;
+        }
+
+		.descript_img{
+			width: 100%;
+			height: 60%;
+			padding: 4px;
+		}
+
+		.descript_img img{
+			width: 96%;
+			height: 100%;
+		}
+
+		.descript_des p{
+            width: 100%;
+			margin:0px;
+			margin-left: 5px;
+            white-space:nowrap;
+            word-wrap:break-word;
+            word-break:break-all;
+            text-overflow:ellipsis;
+            overflow:hidden;
+		}
+
+		.checkbox{
+			 position:absolute; 
+			 /*left:30px; top:30px; */
+			 /*background:#F00; */
+			 width:30px; 
+			 height:30px
+		}
+		.checkbox input{
+			width:30px; height:30px;
+		}
+		.main_top{
+			width: 100%;
+			height: 90%;
+		}
+		.main_buttom{
+			width: 100%;
+			height: 10px;
+		}
+		.main_buttom p{
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		.clear{
+			clear:both;
+		}
+        .left ul li{
+            list-style-type:none;
+
+        }
+         .left ul li:hover{
+            cursor:pointer;
+             color:blue;
+             background-color: #999999;
+        }
+
+	</style>
+</head>
+<body>
+<div class="center">
+	<div class="head"></div>
+	<div class="left">
+		<ul>
+			<li class="allPro">全部商品</li>
+			<li class="searchPro">搜索商品</li>
+            <li class="checkedPro">已选商品</li>
+		</ul>
+	</div>
+	<div class="main">
+		<div class="main_top">
+
+		</div>
+		<div class="clear"></div>
+		<div class="main_buttom">
+			<p>
+                <span>当前页：</span><span id="currentPage">1</span>
+                <button class="last">上一页</button>
+                <button class="next">下一页</button>
+
+                <input type="text" id="flyPage"/>
+                <button class="flyPageButton">跳转</button>
+            </p>
+		</div>
+
+	</div>
+	
+
+</div>
+
+</body>
+</html>
+<script>
+    var currentPage = 1;
+
+    getPro_list();
+
+    function serch(){
+        currentPage = 1;
+        getPro_list();
+    }
+
+    function save(){
+
+        var list = [];
+        $("input[name='product']:checked").each(function(i){
+            list.push($(this).val())
+        });
+
+        var param = {};
+        param['list'] = JSON.stringify(list);
+        $.get("pro/save_list",param,function(data){
+           console.log(data);
+           alert("保存成功");
+        },"json");
+
+
+    }
+
+    function getPro_list(){
+        $('#currentPage').text(currentPage);
+        debugger;
+        var productName = $('#productName').val();
+        productName = productName == undefined?"":productName;
+        var productCat = $('#productCat').val();
+        productCat = productCat == undefined?"":productCat;
+        var param = {};
+        param['page'] = currentPage;
+        param['productName'] = productName;
+        param['productCat'] = productCat;
+        $.get("pro/pro_list",param,function(data){
+            $('.main_top').html(data);
+            addClick();
+        });
+    }
+
+    $(".next").click(function(){
+        currentPage++;
+        getPro_list();
+    });
+
+    $(".last").click(function(){
+        if(currentPage>1){
+            currentPage--;
+        }
+        getPro_list();
+    });
+    $('.flyPageButton').click(function(){
+        currentPage = $('#flyPage').val();
+        if(currentPage<1 || currentPage == null || currentPage == undefined){
+            currentPage = 1;
+        }
+        getPro_list();
+    });
+
+    $('.allPro').click(function(){
+        currentPage = 1;
+        $('#productName').val("");
+        $('#productCat').val("");
+        getPro_list();
+    });
+
+    $('.checkedPro').click(function(){
+
+    });
+
+    function addClick(){
+        $('.descript').off('click');
+        $('.descript').on('click',function(){
+
+            var checkbox = $(this).find("input");
+
+            if($(checkbox).is(':checked')){
+                $(checkbox).prop("checked",false);
+                $(this).css('border','1px solid #999999');
+            }else{
+                $(checkbox).prop("checked",true);
+                $(this).css('border','1px solid red');
+            }
+
+
+
+
+        });
+
+    }
+</script>
