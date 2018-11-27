@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                 http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <!-- 自动扫描组件。   -->
+    <context:component-scan base-package="com.zxyl">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <bean id="propertyConfigurer" class="com.zxyl.utils.SpringPropertyUtil">
+        <property name="locations">
+            <list>
+                <!-- 这里的classpath可以认为是项目中的src-属性名是 locations， 使用子标签<list></list>可以指定多个数据库的配置文件，这里指定了一个 -->
+                <value>classpath:conf.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <import resource="classpath:redis-servlet.xml" />
+    <!-- 对string操作的封装 -->
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="jedisConnectionFactory" />
+    <!-- rides 连接配置 end -->
+
+</beans>

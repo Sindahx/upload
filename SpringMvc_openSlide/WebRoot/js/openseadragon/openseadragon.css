@@ -1,0 +1,10 @@
+/*突出显示框颜色*/
+div.displayregion {
+    border: 1px solid #00ccff !important;
+    background-color: rgba(0,204,255,.22) !important;
+    cursor: move !important;
+}
+div.navigator {
+    border: 1px solid rgba(255,255,255,.8) !important;
+    background: rgba(0, 0, 0, .3) !important;
+}
