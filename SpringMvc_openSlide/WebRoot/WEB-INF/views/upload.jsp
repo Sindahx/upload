@@ -64,10 +64,10 @@
                 var file = (data.files[0].name).split('.');
 				var itype = file[file.length - 1];
                 itype = itype.toLowerCase();
-                if (fileType.indexOf(itype) == -1) {
+               /* if (fileType.indexOf(itype) == -1) {
                     alert("仅支持 svs,jpg,jpeg, bmp, png,tiff,tif,vms,vmu,ndpi,scn,mrxs,svslide,bif 图片上传");
                     return false;
-                }
+                }*/
                 jqXHR = data.submit();
                 $('#myFile').css("display","none");
                 $("#weixin_upload").addClass("disabled");
