@@ -79,7 +79,7 @@
             $("#weixin_progress").html(progress + '%');
         }).bind('fileuploaddone', function (e, data) {
             var filename = data.result.name;
-            uploaddone(filename, getPostfix(filename), uuid);
+            // uploaddone(filename, getPostfix(filename), uuid);
             $("#weixin_progress").css('width', 100 + '%');
             $("#weixin_progress").html(100 + '%');
             $('#weixin_upload span').html("上传成功");

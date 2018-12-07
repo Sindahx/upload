@@ -1,7 +1,6 @@
 package com.zxyl.controller;
 
 import com.google.gson.Gson;
-import com.zxyl.redis.service.BaseService;
 import com.zxyl.utils.CMDutils;
 import com.zxyl.utils.PublicData;
 import com.zxyl.utils.SpringPropertyUtil;
@@ -24,9 +23,6 @@ import java.util.Map;
  */
 @Controller
 public class UploadFile {
-
-    @Resource
-    private BaseService baseService;
 
     @RequestMapping("/upload")
     public String uploadPage(Model model,String uuid,String userName) {
@@ -82,7 +78,7 @@ public class UploadFile {
         map.put("name", uuid);
 
         CMDutils.executeLinuxCmd(targetFile.getPath(),tomcatPath,uuid);
-        baseService.put("imageTransform",uuid,"isOk");
+//        baseService.put("imageTransform",uuid,"isOk");
         Gson gson = new Gson();
         return gson.toJson(map);
     }
@@ -168,8 +164,8 @@ public class UploadFile {
                 lStartPos = lStartPos-Long.parseLong(maxChunkSize);
                 Long endPostion = lStartPos+ Long.parseLong(maxChunkSize);
                 response.setHeader("Range","bytes "+lStartPos+"-"+endPostion);
-                fs.close();
-                return;
+//                fs.close();
+//                return;
             } else if (lStartPos <= startPosition) {
 
                 byte[] nbytes = new byte[fileLength];
@@ -184,7 +180,6 @@ public class UploadFile {
         if (fs != null) {
             fs.flush();
             fs.close();
-            fs = null;
         }
     }
 }

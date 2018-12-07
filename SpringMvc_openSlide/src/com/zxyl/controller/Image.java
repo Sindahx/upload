@@ -1,12 +1,10 @@
 package com.zxyl.controller;
 
-import com.zxyl.redis.service.BaseService;
 import com.zxyl.utils.SpringPropertyUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Resource;
 import java.io.File;
 
 /**
@@ -14,9 +12,6 @@ import java.io.File;
  */
 @Controller
 public class Image {
-
-    @Resource
-    private BaseService baseService;
 
     @RequestMapping("/image")
     public String index(String imageuuid, Model model) {

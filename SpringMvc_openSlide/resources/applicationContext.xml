@@ -21,9 +21,9 @@
         </property>
     </bean>
 
-    <import resource="classpath:redis-servlet.xml" />
-    <!-- 对string操作的封装 -->
-    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="jedisConnectionFactory" />
+    <!--<import resource="classpath:redis-servlet.xml" />
+    &lt;!&ndash; 对string操作的封装 &ndash;&gt;
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="jedisConnectionFactory" />-->
     <!-- rides 连接配置 end -->
 
 </beans>
