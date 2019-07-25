@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Configuration shutdownHook="disable">
+	<Properties>
+		<Property name="fileName">smarthealth.log</Property>
+		<Property name="pattern">
+			%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5p] [%t] [%C{1}.%M] (%F:%L) - %m%n
+		</Property>
+		<Property name="logPath">${sys:catalina.home}/logs/</Property>
+		<!--<Property name="logPath">${icem.home}/logs/</Property>-->
+	</Properties>
+	<Appenders>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="${pattern}" />
+		</Console>
+		<RollingFile name="FILE" fileName="${logPath}${fileName}" append="true" filePattern="${logPath}${fileName}.%d{yyyy-MM-dd}.%i.gz">
+			<PatternLayout pattern="${pattern}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="500 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Logger name="com.cloud" level="DEBUG" />
+		<Root level="INFO">
+			<AppenderRef ref="FILE" />
+			<AppenderRef ref="STDOUT" />
+		</Root>
+	</Loggers>
+</Configuration>
