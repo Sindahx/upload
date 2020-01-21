@@ -27,7 +27,7 @@
         <postgresql.version>9.4.1212</postgresql.version>
         <querydsl.version>4.1.4</querydsl.version>
         <shiro.version>1.2.4</shiro.version>
-        <spring.version>5.0.4.RELEASE</spring.version>
+        <spring.version>5.2.3.RELEASE</spring.version>
         <spring-data-jpa.version>2.0.0.RELEASE</spring-data-jpa.version>
         <spring-data-cassandra.version>2.0.0.RELEASE</spring-data-cassandra.version>
         <springfox-swagger2.version>2.6.1</springfox-swagger2.version>
