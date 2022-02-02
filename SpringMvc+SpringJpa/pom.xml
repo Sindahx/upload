@@ -24,7 +24,7 @@
         <jackson-databind.version>2.9.2</jackson-databind.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <log4j2.version>2.5</log4j2.version>
-        <postgresql.version>9.4.1212</postgresql.version>
+        <postgresql.version>42.2.25</postgresql.version>
         <querydsl.version>4.1.4</querydsl.version>
         <shiro.version>1.2.4</shiro.version>
         <spring.version>5.0.4.RELEASE</spring.version>
